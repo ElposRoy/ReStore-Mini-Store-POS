@@ -32,8 +32,23 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                                    Chirps
+                                    Printing Services
+                                </NavLink>
+                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                                    School supplies
+                                </NavLink>
+                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                                    Groceries
+                                </NavLink>
+                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                                    GCASH
+                                </NavLink>
+
+
+                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                                    To-Do
                                 </NavLink>
                             </div>
                         </div>
@@ -118,8 +133,27 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+
+
                         <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                            Chirps
+                            Printing Services
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                            School Supplies
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                            Groceries
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                            GCASH
+                            </ResponsiveNavLink>
+
+
+                        <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
+                            To-Do
                             </ResponsiveNavLink>
                     </div>
 
