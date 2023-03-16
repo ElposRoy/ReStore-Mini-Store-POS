@@ -16,13 +16,16 @@ const form = useForm({
     <Head title="Chirps" />
  
     <AuthenticatedLayout>
-        <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
             <form @submit.prevent="form.post(route('chirps.store'), { onSuccess: () => form.reset() })">
-                <textarea
-                    v-model="form.message"
-                    placeholder="What's on your mind?"
-                    class="block w-full border-gray-300 bg-white focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                ></textarea>
+                <v-textarea 
+                v-model="form.message"
+                label="What's on your mind?" 
+                variant="solo"
+               
+                >
+            </v-textarea>
+               
                 <InputError :message="form.errors.message" class="mt-2" />
                 <PrimaryButton class="mt-4">POST</PrimaryButton>
             </form>
