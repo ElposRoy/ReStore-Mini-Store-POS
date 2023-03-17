@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('account_name');
             $table->string('account_number');
-            $table->decimal('10,2');
+            $table->decimal('amount',10,2);
             $table->time('received_time');
             $table->timestamps();
             $table->softDeletes();
