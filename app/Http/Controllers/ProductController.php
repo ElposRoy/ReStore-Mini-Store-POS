@@ -1,18 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Category;
+use Inertia\Inertia;
+use Inertia\Response;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return Inertia::render('Products/Index', [
+            'products' => Product::with(['category'])->paginate(),
+            'categories'=>Category::all(),
+        ]);
     }
 
     /**
@@ -20,7 +26,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        $category_names = $categories->pluck('title', 'id');
+        return Inertia::render('Products/Index', [
+            'category_names' => $category_names,
+        ]);
     }
 
     /**
@@ -28,7 +38,33 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
+        $validated = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'file' => 'required|image', // ensure the uploaded file is an image
+            'price' => 'required|numeric|max:999999.99',
+            'quantity' => 'required|integer|max:255',
+            'category_id' => 'required|string|max:255',
+          
+        ]);
+     
+        $image = $validated['file']; // get the uploaded file
+       
+        $image->storeAs('images',$image->getClientOriginalName()); // store the image in the storage public/images directory
+        
+        $path = 'storage/images/'.$image->getClientOriginalName();
+        
+        // $document = new Document();
+        Product::create([
+            'product_name' => $validated['product_name'],
+            'price' => $validated['price'],
+            'quantity' => $validated['quantity'],
+            'category_id' => $validated['category_id'],
+           
+            'file' => $path, // save the file path in the database
+        ]);
+
+
     }
 
     /**
@@ -36,7 +72,6 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
     }
 
     /**
