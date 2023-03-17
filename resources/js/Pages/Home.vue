@@ -74,8 +74,8 @@ defineProps({
             <div class="mt-7">
                 <div class="text-white max-w-md mx-auto rounded px-8 pt-6 pb-8 mb-4">
   <h2 class="text-center text-xl font-bold mb-6">WELCOME</h2>
-  <h2 class="text-center text-xl font-bold mb-6">Public Employment Service Office</h2>
-  <h2 class="text-center text-xl font-bold mb-6">Archiving System</h2>
+  <h2 class="text-center text-xl font-bold mb-6">R.E STORE</h2>
+  <h2 class="text-center text-xl font-bold mb-6">Inventory/Archive System</h2>
 </div>
 
               
