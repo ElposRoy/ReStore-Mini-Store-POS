@@ -34,17 +34,9 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
 
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                                    Printing Services
+                                    Products
                                 </NavLink>
-                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                                    School supplies
-                                </NavLink>
-                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                                    Groceries
-                                </NavLink>
-                                <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                                    GCASH
-                                </NavLink>
+                              
 
 
                                 <NavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
@@ -136,19 +128,7 @@ const showingNavigationDropdown = ref(false);
 
 
                         <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                            Printing Services
-                            </ResponsiveNavLink>
-
-                            <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                            School Supplies
-                            </ResponsiveNavLink>
-
-                            <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                            Groceries
-                            </ResponsiveNavLink>
-
-                            <ResponsiveNavLink :href="route('chirps.index')" :active="route().current('chirps.index')">
-                            GCASH
+                            Products
                             </ResponsiveNavLink>
 
 

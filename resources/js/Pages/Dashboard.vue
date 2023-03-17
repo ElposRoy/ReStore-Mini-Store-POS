@@ -3,6 +3,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 </script>
 
+<script>
+
+export default{
+  data(){
+    return ({
+      baseurl: location.origin
+    })
+  },
+}
+</script>
 <template>
     <Head title="Dashboard" />
 
@@ -23,10 +33,10 @@ import { Head } from '@inertiajs/vue3';
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
                 <v-card-title class="text-h5">
-                  Supermodel
+                 PRODUCTS
                 </v-card-title>
 
-                <v-card-subtitle>Foster the People</v-card-subtitle>
+                <v-card-subtitle>Collection of products</v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
@@ -34,7 +44,7 @@ import { Head } from '@inertiajs/vue3';
                     variant="outlined"
                     size="small"
                   >
-                    START RADIO
+                    Record
                   </v-btn>
                 </v-card-actions>
               </div>
@@ -44,7 +54,7 @@ import { Head } from '@inertiajs/vue3';
                 size="125"
                 rounded="0"
               >
-                <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"></v-img>
+                <v-img :src="baseurl+'/images/Archive.png'"></v-img>
               </v-avatar>
             </div>
           </v-card>
