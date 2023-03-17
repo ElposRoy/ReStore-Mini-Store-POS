@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -31,10 +32,14 @@ Route::get('/dashboard', function () {
 
 
 Route::resource('chirps', ChirpController::class)
-
 ->only(['index', 'store', 'update','destroy'])
-
 ->middleware(['auth', 'verified']);
+
+
+
+Route::resource('products', ProductController::class) //Product ROUTE
+    ->only(['index','create', 'store', 'update', 'destroy'])
+    ->middleware(['auth', 'verified']);
 
 
 Route::middleware('auth')->group(function () {

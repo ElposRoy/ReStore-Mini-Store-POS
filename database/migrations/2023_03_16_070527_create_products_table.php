@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('product_name');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('status',35);
             $table->double('price',9,2);
             $table->integer('quantity');

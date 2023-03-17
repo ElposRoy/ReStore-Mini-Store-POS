@@ -19,8 +19,6 @@ const form = useForm({
 
 });
 
- 
-
 const editing = ref(false);
 </script>
  
