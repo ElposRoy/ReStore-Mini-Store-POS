@@ -40,8 +40,6 @@ class ChirpController extends Controller
 
         ]);
 
- 
-
         $request->user()->chirps()->create($validated);
 
  
