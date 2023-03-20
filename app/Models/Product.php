@@ -11,7 +11,21 @@ class Product extends Model
     use HasFactory,SoftDeletes;
     
 
-    
+    protected $fillable=[
+        'product_name',
+        'image',
+        'price' ,
+        'quantity',
+        'category_id',
+        
+    ];
+
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
+
+
     public function category()
 {
     return $this->belongsTo(Category::class);

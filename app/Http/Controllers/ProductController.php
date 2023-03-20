@@ -26,11 +26,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $category_names = $categories->pluck('title', 'id');
-        return Inertia::render('Products/Index', [
-            'category_names' => $category_names,
-        ]);
+        // $categories = Category::all();
+        // $category_names = $categories->pluck('title', 'id');
+        // return Inertia::render('Products/Index', [
+        //     'category_names' => $category_names,
+        // ]);
     }
 
     /**
@@ -38,31 +38,33 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-       
+      
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'file' => 'required|image', // ensure the uploaded file is an image
             'price' => 'required|numeric|max:999999.99',
             'quantity' => 'required|integer|max:255',
-            'category_id' => 'required|string|max:255',
+            'category_id' => 'required|integer|min:1|max:255',
           
         ]);
-     
+        // dd($validated);
         $image = $validated['file']; // get the uploaded file
        
         $image->storeAs('images',$image->getClientOriginalName()); // store the image in the storage public/images directory
         
         $path = 'storage/images/'.$image->getClientOriginalName();
-        
-        // $document = new Document();
-        Product::create([
+    
+        //dd($path);
+
+        $request->user()->products()->create([
             'product_name' => $validated['product_name'],
+            'image' => $path, // save the file path in the database
             'price' => $validated['price'],
             'quantity' => $validated['quantity'],
             'category_id' => $validated['category_id'],
-           
-            'file' => $path, // save the file path in the database
         ]);
+
+       
 
 
     }
