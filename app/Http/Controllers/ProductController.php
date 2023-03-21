@@ -38,7 +38,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-      
+    //   dd($request->toArray());
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'image' => 'required|image', // ensure the uploaded file is an image
@@ -89,8 +89,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        dd($request->toArray());
-
+       
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'image' => 'required|image', // ensure the uploaded file is an image
@@ -113,7 +112,7 @@ class ProductController extends Controller
             'category_id' => $validated['category_id'],
         ]);
 
-       
+      
     }
 
     /**

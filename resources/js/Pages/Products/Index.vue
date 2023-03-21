@@ -4,10 +4,18 @@ import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
 import ProductEditDialog from '@/Components/product/ProductEditDialog.vue';
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import InputError from '@/Components/InputError.vue';
+import { router } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import {useForm, Head } from '@inertiajs/vue3';
 
+
+
 defineProps(['products','categories']);
+
+
+</script>
+
+<script>
 let editForm = useForm({
     id: null,
     image: null,
@@ -16,10 +24,6 @@ let editForm = useForm({
     quantity: '',
     category_id: '',
 });
-
-</script>
-
-<script>
 
 export default {
   
@@ -30,21 +34,22 @@ export default {
       
       search: '',
       headers: [
+      { title: 'ID', key: 'id', },
         {
           title: 'Product name',
           align: 'start',
           sortable: false,
           key: 'product_name',
         },
+       
         { title: 'Image', key: 'image' },
         { title: 'Price', key: 'price' },
         { title: 'Quantity', key: 'quantity' },
-        { title: 'ID', key: 'id', },
         { title: 'Category', key: 'category' },
         { title: 'Status', key: 'status' },
         { title: 'Actions', key: 'actions', sortable: false },
       ],
-      prod:{}
+      // prod:{}
     }),
     computed: {
    
@@ -72,13 +77,15 @@ export default {
  
     openEdit(item) {
       // console.log(item.columns.id)
-     
+      
+     this.editForm.image=item.columns.image;
     this.editForm.id=item.columns.id;
     this.editForm.product_name=item.columns.product_name;
     this.editForm.price=item.columns.price;
     this.editForm.quantity=item.columns.quantity;
     this.editForm.category_id=item.columns.category.id;
     this.dialogEdit = true;
+    
     // alert(item.columns.category.id)
   },
     openDelete(){
@@ -93,13 +100,40 @@ export default {
         this.dialogDelete = false
       },
 
+      deleteItemConfirm(){
+        
+      },
+
        editSubmitForm() {
-         this.editForm.put(route('products.update',this.editForm.id), { 
-          onSuccess: () => {
-          this.close();
-            } 
-          });
+       
+              router.post(`/products/${editForm.id}`, {
+              _method: 'put',
+                ...this.editForm
+                
+              // id: this.editForm.id,
+              // image: this.editForm.image,
+              // product_name: this.editForm.product_name,
+              // price:this.editForm.price,
+              // quantity: this.editForm.quantity,
+              // category_id: this.editForm.category_id,
+            })
+
+        //  this.editForm.put(route('products.update',this.editForm.id), { 
+        //   onSuccess: () => {
+        //     this.editForm.reset();
+        //   this.close();
+        //     } 
+        //   });
      },
+
+    //  editSubmitForm() {
+    //      this.editForm.post((`/products/${this.editForm.id}`, this.editForm), { 
+    //       onSuccess: () => {
+    //         this.editForm.reset();
+    //       this.close();
+    //         } 
+    //       });
+    //  },
 
 
   },
@@ -172,14 +206,13 @@ export default {
           max-width="500px"
           persistent
         >
-     
           <v-card>
             <v-card-title>
               <span class="text-h5">Edit Product</span>
             </v-card-title>
 
             <v-card-text>
-              <form @submit.prevent="editSubmitForm">
+              <form @submit.prevent="submitProducts">
               <v-container>
                 <v-row>
                   <v-col
@@ -287,6 +320,8 @@ export default {
           </v-card>
         </v-dialog>
 <!-- EDIT DIALOG -->
+
+<!-- Delete Dialog -->
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
@@ -298,7 +333,7 @@ export default {
             </v-card-actions>
           </v-card>
         </v-dialog>
-
+<!-- Delete Dialog -->
       
 
       </v-toolbar>
