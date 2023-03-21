@@ -41,14 +41,14 @@ class ProductController extends Controller
       
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
-            'file' => 'required|image', // ensure the uploaded file is an image
+            'image' => 'required|image', // ensure the uploaded file is an image
             'price' => 'required|numeric|max:999999.99',
             'quantity' => 'required|integer|max:255',
             'category_id' => 'required|integer|min:1|max:255',
           
         ]);
         // dd($validated);
-        $image = $validated['file']; // get the uploaded file
+        $image = $validated['image']; // get the uploaded file
        
         $image->storeAs('images',$image->getClientOriginalName()); // store the image in the storage public/images directory
         
@@ -89,7 +89,31 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        dd($request->toArray());
+
+        $validated = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'image' => 'required|image', // ensure the uploaded file is an image
+            'price' => 'required|numeric|max:999999.99',
+            'quantity' => 'required|integer|max:255',
+            'category_id' => 'required|integer|min:1|max:255',
+        ]);
+        $image = $validated['image']; // get the uploaded file
+       
+        $image->storeAs('images',$image->getClientOriginalName()); // store the image in the storage public/images directory
+        
+        $path = 'storage/images/'.$image->getClientOriginalName();
+
+
+        $product->update([
+            'product_name' => $validated['product_name'],
+            'image' => $path, // save the file path in the database
+            'price' => $validated['price'],
+            'quantity' => $validated['quantity'],
+            'category_id' => $validated['category_id'],
+        ]);
+
+       
     }
 
     /**

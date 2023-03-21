@@ -4,25 +4,24 @@ import { useForm } from '@inertiajs/vue3';
 
 
 defineProps(['products','categories']);
+
+
 </script>
 
 <script>
 
 let form = useForm({
-    file: null,
+    image: null,
     product_name: '',
     price:'',
     quantity: '',
-    category_id: '1',
+    category_id: '',
 });
 export default {
     data: () => ({
 
       dialog: false,
-      dialogDelete: false,
-      search: '',
      
-      editedIndex: -1,
    
     }),
 
@@ -34,6 +33,7 @@ export default {
       dialog (val) {
         val || this.close()
       },
+      
       dialogDelete (val) {
         val || this.closeDelete()
       },
@@ -48,25 +48,19 @@ export default {
     
       },
 
-
-      deleteItem (item) {
-        this.editedIndex = this.products.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-    
+  
       close () {
         this.dialog = false
       
       
       },
       submitForm() {
-      
-      this.form.post(route('products.store'), { 
-        onSuccess: () => this.form.reset() 
-      })
-      this.close()
+        this.form.post(route('products.store'), { 
+  onSuccess: () => {
+    this.close();
+    this.form.reset();
+  } 
+});
     },
 
  
@@ -89,6 +83,7 @@ export default {
             >
               New Product
             </v-btn>
+         
           </template>
           <v-card>
             <v-card-title>
@@ -114,15 +109,15 @@ export default {
                   <div class="mb-4">
                     <label for="file" class="block font-medium text-gray-700 mb-3">FILE</label>
                     <input
-                        @input="form.file=$event.target.files[0]"
+                        @input="form.image=$event.target.files[0]"
                         type="file"
-                        name="file"
-                        id="file"
+                        name="image"
+                        id="image"
                         required
-                        placeholder="Enter your File"
+                        placeholder="Enter your Image"
                         class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                     >
-                    <InputError :message="form.errors.file" class="mt-2" />
+                    <InputError :message="form.errors.image" />
                 </div> 
 
 
@@ -138,6 +133,7 @@ export default {
                       label="Product name"
                      
                     ></v-text-field>
+                    <InputError :message="form.errors.product_name"/>
                   </v-col>
                 
                   <v-col
@@ -149,6 +145,7 @@ export default {
                       v-model="form.price"
                       label="Price"
                     ></v-text-field>
+                    <InputError :message="form.errors.price"/>
                   </v-col>
                   <v-col
                     cols="12"
@@ -159,6 +156,7 @@ export default {
                       v-model="form.quantity"
                       label="Quantity"
                     ></v-text-field>
+                    <InputError :message="form.errors.quantity"/>
                   </v-col>
                   <v-col
                     cols="12"
@@ -174,6 +172,7 @@ export default {
                     label="Category"
                     density="comfortable"
                   ></v-select>
+                  <InputError :message="form.errors.category_id"/>
                   </v-col>
                 </v-row>
               </v-container>
