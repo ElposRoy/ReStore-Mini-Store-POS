@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
-import ProductEditDialog from '@/Components/product/ProductEditDialog.vue';
+
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3'
@@ -25,28 +25,29 @@ let editForm = useForm({
     category_id: '',
 });
 
+
 export default {
   
     data: () => ({
       dialog: false,
       dialogDelete: false,
       dialogEdit: false,
-      
+      deleteID: null,
       search: '',
       headers: [
-      { title: 'ID', key: 'id', },
+        
+      { title: 'ID', key: 'id', align: ' d-none' },
+      { title: 'Image', key: 'image' },
         {
-          title: 'Product name',
+          title: 'Product Name',
           align: 'start',
           sortable: false,
           key: 'product_name',
         },
-       
-        { title: 'Image', key: 'image' },
-        { title: 'Price', key: 'price' },
-        { title: 'Quantity', key: 'quantity' },
         { title: 'Category', key: 'category' },
-        { title: 'Status', key: 'status' },
+        { title: 'Price', key: 'price' },
+        { title: 'Qty', key: 'quantity' },
+        { title: 'Unit', key: 'status',  align: 'center' },
         { title: 'Actions', key: 'actions', sortable: false },
       ],
       // prod:{}
@@ -77,8 +78,7 @@ export default {
  
     openEdit(item) {
       // console.log(item.columns.id)
-      
-     this.editForm.image=item.columns.image;
+    this.editForm.image=item.columns.image;
     this.editForm.id=item.columns.id;
     this.editForm.product_name=item.columns.product_name;
     this.editForm.price=item.columns.price;
@@ -90,6 +90,7 @@ export default {
   },
     openDelete(){
       this.dialogDelete = true;
+     
     },
 
     close () {
@@ -101,7 +102,15 @@ export default {
       },
 
       deleteItemConfirm(){
-        
+         
+        router.post(`/products/${this.deleteID}`, {
+              _method: 'delete'
+           
+            }).then((response)=>{
+              this.dialogDelete=false;
+            }).catch((error)=>{
+              
+            })
       },
 
        editSubmitForm() {
@@ -109,7 +118,7 @@ export default {
               router.post(`/products/${editForm.id}`, {
               _method: 'put',
                 ...this.editForm
-                
+
               // id: this.editForm.id,
               // image: this.editForm.image,
               // product_name: this.editForm.product_name,
@@ -324,7 +333,7 @@ export default {
 <!-- Delete Dialog -->
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+            <v-card-title class="text-h5">Are you sure you want to delete this item? </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
@@ -348,7 +357,7 @@ export default {
       </v-icon>
       <v-icon
         size="small"
-        @click="openDelete"
+        @click="openDelete(); deleteID=item.columns.id"
       >
         mdi-delete
       </v-icon>
