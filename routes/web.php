@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -40,6 +41,12 @@ Route::resource('chirps', ChirpController::class)
 Route::resource('products', ProductController::class) //Product ROUTE
     ->only(['index','create', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
+
+
+Route::resource('categories', CategoryController::class) //Categories ROUTE
+->only(['index','create', 'store', 'update', 'destroy'])
+->middleware(['auth', 'verified']);
+
 
 
 Route::middleware('auth')->group(function () {

@@ -1,18 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
-
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import {useForm, Head } from '@inertiajs/vue3';
-
-
-
 defineProps(['products','categories']);
-
-
 </script>
 
 <script>
@@ -101,17 +95,17 @@ export default {
         this.dialogDelete = false
       },
 
-      deleteItemConfirm(){
-         
-        router.post(`/products/${this.deleteID}`, {
-              _method: 'delete'
-           
-            }).then((response)=>{
-              this.dialogDelete=false;
-            }).catch((error)=>{
-              
-            })
-      },
+
+      async deleteItemConfirm() {
+  try {
+    await router.post(`/products/${this.deleteID}`, {
+      _method: 'delete'
+    });
+    this.dialogDelete = false;
+  } catch (error) {
+    // Handle error
+  }
+},
 
        editSubmitForm() {
        
