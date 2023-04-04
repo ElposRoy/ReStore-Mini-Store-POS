@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Inertia\Inertia;
+use Inertia\Response;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $validated = $request->validate([
+        //     'title' => 'required|string|max:255',
+        // ]);
+
+        // Category::create([
+        //     'title' => $validated['title'],
+        //     'user_id' => auth()->user()->id,
+        // ]);
+
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            
+        ]);
+
+        $request->user()->categories()->create([
+            'title' => $validated['title'],
+        ]);
     }
 
     /**
