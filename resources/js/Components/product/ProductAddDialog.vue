@@ -1,7 +1,7 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
-
+import ProductNewCategory from '@/Components/product/ProductNewCategory.vue';
 
 defineProps(['products','categories']);
 
@@ -17,11 +17,13 @@ let form = useForm({
     quantity: '',
     category_id: '',
 });
+
+
 export default {
     data: () => ({
 
       dialog: false,
-     
+      dialogCategory: false,
     }),
 
     computed: {
@@ -32,9 +34,8 @@ export default {
       dialog (val) {
         val || this.close()
       },
-      
-      dialogDelete (val) {
-        val || this.closeDelete()
+      dialogCategory (val) {
+        val || this.close()
       },
     },
 
@@ -50,7 +51,7 @@ export default {
   
       close () {
         this.dialog = false
-      
+        this.dialogCategory = false
       
       },
       submitForm() {
@@ -61,18 +62,43 @@ export default {
   } 
 });
     },
+    openCategory() {
+      this.dialogCategory=true
+    },
 
- 
+
+    categorySubmitForm($title) {
+      // console.log('asdasd',$title)
+
+          $title.post(route('categories.store'), { 
+    onSuccess: () => {
+      this.close();
+      this.form.reset();
+    } 
+  });
+      },
     },
   }
 </script>
  <template>
+  <!-- ADD DIALOG -->
     <v-dialog
           v-model="dialog"
           max-width="500px"
           persistent
         >
           <template v-slot:activator="{ props }">
+        
+
+            <v-btn 
+              color="primary"
+              dark
+              class="mb-2"
+              @click="openCategory"
+             
+            >
+              New Category
+            </v-btn>
             
             <v-btn
               color="primary"
@@ -196,5 +222,15 @@ export default {
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+     </v-dialog>
+  <!-- ADD DIALOG -->
+
+     <ProductNewCategory 
+     :categories="categories" 
+     :dialogCategory="dialogCategory" 
+     @closeDialog="dialogCategory=false" 
+     @categorySubmitForm="categorySubmitForm">
+     </ProductNewCategory>
+
+
  </template>
