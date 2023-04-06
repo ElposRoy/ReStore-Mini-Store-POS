@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -33,10 +34,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::resource('chirps', ChirpController::class)
+Route::resource('purchases', PurchaseController::class) //Purchase Link
 ->only(['index', 'store', 'update','destroy'])
 ->middleware(['auth', 'verified']);
 
+
+Route::resource('chirps', ChirpController::class)
+->only(['index', 'store', 'update','destroy'])
+->middleware(['auth', 'verified']);
 
 
 Route::resource('products', ProductController::class) //Product ROUTE

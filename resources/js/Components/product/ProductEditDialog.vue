@@ -2,114 +2,103 @@
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
-defineProps(['products','categories']);
 
+defineEmits(['closeDialog','editSubmitForm'])
+
+defineProps(['dialogEdit','products']);
 </script>
 
 <script>
 
 let editForm = useForm({
-    file: null,
-    product_name: '',
-    price:'',
-    quantity: '',
-    category_id: '',
-});
-export default {
-    data: () => ({
-    dialogEdit: false,
-      search: '',
-  
    
-    }),
+    product_name: '',
+  
+});
 
 
-    watch: {
-        dialogEdit (val) {
-        val || this.close()
-      },
-
-    },
-
-    created () {
-      this.initialize()
-    },
-
-    methods: {
-      initialize () {
-    
-      },
-
-      close () {
-        this.editDialog = false
-      
-      },
-      editSubmitForm() {
-      this.editForm.post(route('products.update'), { 
-        onSuccess: () => this.editForm.reset() 
-      })
-      this.close()
-    },
-
- 
-    },
-  }
 </script>
  <template>
-    <v-dialog
+  <!-- EDIT DIALOG -->
+  <v-dialog
           v-model="dialogEdit"
           max-width="500px"
           persistent
         >
-     
           <v-card>
             <v-card-title>
-              <span class="text-h5">Edit Prodcut</span>
+              <span class="text-h5">Edit Product</span>
             </v-card-title>
 
             <v-card-text>
-              <form @submit.prevent="editSubmitForm">
+              <form @submit.prevent="submitProducts">
               <v-container>
                 <v-row>
-                  <v-col
+                  <!-- <v-col
                     cols="12"
                     sm="6"
                     md="12"
                   >
-                 <!-- <v-file-input
-                    :value="form.file"
-
-                    label="Product Image"
-                    density="compact"
-                  ></v-file-input> -->
+            
 
                   <div class="mb-4">
                     <label for="file" class="block font-medium text-gray-700 mb-3">FILE</label>
                     <input
-                        @input="editForm.file=$event.target.files[0]"
+                        @input="editForm.image=$event.target.files[0]"
                         type="file"
-                        name="file"
-                        id="file"
+                        name="image"
+                        id="image"
                         required
-                        placeholder="Enter your File"
+                        placeholder="Enter your Image"
                         class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                     >
-                    <InputError :message="editForm.errors.file" class="mt-2" />
+                    <InputError :message="editForm.errors.image" />
                 </div> 
 
 
-                  </v-col>
+                  </v-col> -->
 
                   <v-col
                     cols="12"
                     sm="6"
-                    md="12"
+                    md="6"
                   >
                     <v-text-field
                       v-model="editForm.product_name"
                       label="Product name"
                      
                     ></v-text-field>
+                    <InputError :message="editForm.errors.product_name"/>
+                  </v-col>
+
+                  <!-- <v-col
+                    cols="12"
+                    sm="6"
+                    md="3"
+                  >
+
+                  <v-select
+                    v-model="editForm.unit_type_id"
+                    :items="unit_types"
+                    item-title="unit_type"
+                    item-value="id"
+                    label="Unit type"
+                    density="comfortable"
+                  ></v-select>
+                  <InputError :message="editForm.errors.unit_type_id"/>
+                  </v-col>
+
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="3"
+                  >
+                    <v-text-field
+                      v-model="editForm.unit"
+                      label="Units"
+                     
+                    ></v-text-field>
+                    <InputError :message="editForm.errors.unit"/>
                   </v-col>
                 
                   <v-col
@@ -118,24 +107,16 @@ export default {
                     md="4"
                   >
                     <v-text-field
-                      v-model="editForm.price"
-                      label="Price"
+                      v-model="editForm.stock_level"
+                      label="Stock Level"
                     ></v-text-field>
+                    <InputError :message="editForm.errors.stock_level"/>
                   </v-col>
+                
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editForm.quantity"
-                      label="Quantity"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="12"
+                    md="8"
                   >
 
                   <v-select
@@ -146,7 +127,8 @@ export default {
                     label="Category"
                     density="comfortable"
                   ></v-select>
-                  </v-col>
+                  <InputError :message="editForm.errors.category_id"/>
+                  </v-col> -->
                 </v-row>
               </v-container>
               </form>
@@ -157,18 +139,20 @@ export default {
               <v-btn
                 color="blue-darken-1"
                 variant="text"
-                @click="close"
+                @click="$emit('closeDialog')"
               >
                 Cancel
               </v-btn>
               <v-btn
                 color="blue-darken-1"
                 variant="text"
-                @click="editSubmitForm"
+                @click=""
               >
                 Save
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
+        
+<!-- EDIT DIALOG -->
  </template>

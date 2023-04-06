@@ -1,23 +1,21 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
+import ProductEditDialog from '@/Components/product/ProductEditDialog.vue';
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3'
-import {useForm, Head } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 defineProps(['products','categories','unit_types']);
 </script>
 
 <script>
-let editForm = useForm({
-    id: null,
-    image: null,
-    product_name: '',
-    price:'',
-    quantity: '',
-    category_id: '',
-});
 
+let editForm = useForm({
+   
+    product_name: '',
+  
+});
 
 export default {
   
@@ -53,7 +51,7 @@ export default {
     dialog (val) {
       val || this.close()
     },
-    editDialog (val) {
+    dialogEdit (val) {
       val || this.close()
     },
 
@@ -70,16 +68,16 @@ export default {
     },
  
     openEdit(item) {
-      // console.log(item.columns.id)
-    this.editForm.image=item.columns.image;
-    this.editForm.id=item.columns.id;
-    this.editForm.product_name=item.columns.product_name;
-    this.editForm.price=item.columns.price;
-    this.editForm.quantity=item.columns.quantity;
-    this.editForm.category_id=item.columns.category.id;
-    this.dialogEdit = true;
+   
+    // this.editForm.image=item.columns.image;
+    // this.editForm.id=item.columns.id;
+    // this.editForm.product_name=item.columns.product_name;
+    // this.editForm.price=item.columns.price;
+    // this.editForm.quantity=item.columns.quantity;
+    // this.editForm.category_id=item.columns.category.id;
+   this.dialogEdit = true;
     
-    // alert(item.columns.category.id)
+    
   },
     openDelete(){
       this.dialogDelete = true;
@@ -188,7 +186,7 @@ export default {
       <v-toolbar
         flat
       >
-        <v-toolbar-title>R.E. STORE PRODUCTS</v-toolbar-title>
+        <v-toolbar-title>STORE PRODUCTS</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -211,126 +209,19 @@ export default {
         > <!-- Add this if splitting contents -->
           </ProductAddDialog>
 
-<!-- EDIT DIALOG -->
-          <v-dialog
-          v-model="dialogEdit"
-          max-width="500px"
-          persistent
-        >
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">Edit Product</span>
-            </v-card-title>
 
-            <v-card-text>
-              <form @submit.prevent="submitProducts">
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="12"
-                  >
-                 <!-- <v-file-input
-                    :value="form.file"
+ 
+          <ProductEditDialog
+          :products="products"
+          :categories="categories"
+          :unit_types="unit_types"
+          :dialogEdit="dialogEdit"
+          
+          @closeDialog="dialogEdit=false"
+          @editSubmitForm="editSubmitForm">
 
-                    label="Product Image"
-                    density="compact"
-                  ></v-file-input> -->
+          </ProductEditDialog>
 
-                  <div class="mb-4">
-                    <label for="file" class="block font-medium text-gray-700 mb-3">FILE</label>
-                    <input
-                        @input="editForm.image=$event.target.files[0]"
-                        type="file"
-                        name="image"
-                        id="image"
-                        required
-                        placeholder="Enter your Image"
-                        class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                    >
-                    <InputError :message="editForm.errors.image" class="mt-2" />
-                </div> 
-                  </v-col>
-
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="12"
-                  >
-                    <v-text-field
-                      v-model="editForm.product_name"
-                      label="Product name"
-                      
-                    ></v-text-field>
-                    <InputError :message="editForm.errors.product_name" />
-                  </v-col>
-                
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editForm.price"
-                      label="Price"
-                    ></v-text-field>
-                    <InputError :message="editForm.errors.price" />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editForm.quantity"
-                      label="Quantity"
-                    ></v-text-field>
-                    <InputError :message="editForm.errors.quantity" />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="12"
-                  >
-
-                  <v-select
-                    v-model="editForm.category_id"
-                    :items="categories"
-                    item-title="title"
-                    item-value="id"
-                    label="Category"
-                    density="comfortable"
-                 
-                    required
-                  ></v-select>
-                  <InputError :message="editForm.errors.category_id" />
-                  </v-col>
-                </v-row>
-              </v-container>
-              </form>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="editSubmitForm"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-<!-- EDIT DIALOG -->
 
 <!-- Delete Dialog -->
         <v-dialog v-model="dialogDelete" max-width="500px">
@@ -379,3 +270,6 @@ export default {
   
     </AuthenticatedLayout>
 </template>
+
+
+
