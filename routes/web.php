@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -46,6 +47,11 @@ Route::resource('products', ProductController::class) //Product ROUTE
 Route::resource('categories', CategoryController::class) //Categories ROUTE
 ->only(['index','create', 'store', 'update', 'destroy'])
 ->middleware(['auth', 'verified']);
+
+Route::resource('unit_types', UnitTypeController::class) //Unit Types ROUTE
+->only(['index','create', 'store', 'update', 'destroy'])
+->middleware(['auth', 'verified']);
+
 
 
 

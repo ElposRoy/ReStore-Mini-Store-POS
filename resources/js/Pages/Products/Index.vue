@@ -4,9 +4,8 @@ import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3'
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import {useForm, Head } from '@inertiajs/vue3';
-defineProps(['products','categories']);
+defineProps(['products','categories','unit_types']);
 </script>
 
 <script>
@@ -39,9 +38,9 @@ export default {
           key: 'product_name',
         },
         { title: 'Category', key: 'category' },
-        { title: 'Price', key: 'price' },
-        { title: 'Qty', key: 'quantity' },
-        { title: 'Unit', key: 'status',  align: 'center' },
+        { title: 'Stock Level', key: 'stock_level',  align: 'center' },
+        { title: 'Unit', key: 'unit',  align: 'center' },
+        { title: 'Unit Type', key: 'unit_type',  align: 'center' },
         { title: 'Actions', key: 'actions', sortable: false },
       ],
       // prod:{}
@@ -167,16 +166,22 @@ export default {
        <!-- <img :src="'http://127.0.0.1:8000/'+item.file" alt=""> -->
         </template>
 
-        <template v-slot:[`item.price`]`="{ item }">
+        <!-- <template v-slot:[`item.price`]`="{ item }">
 
           ₱ {{ item.columns.price.toFixed(2) }}
 
-        </template>
+        </template> -->
 
-        <template v-slot:[`item.category`]`="{ item }">
+        <template v-slot:[`item.category`]`="{ item }" >
  {{ item.columns.category.title }}
         </template>
+
         
+        <template v-slot:[`item.unit_type`]`="{ item }">
+ {{ item.columns.unit_type.unit_type}}
+        </template>
+
+
     <template v-slot:top>
 
       
@@ -200,7 +205,10 @@ export default {
 
 
 
-        <ProductAddDialog :categories="categories"> <!-- Add this if splitting contents -->
+        <ProductAddDialog 
+        :categories="categories"
+        :unit_types="unit_types"
+        > <!-- Add this if splitting contents -->
           </ProductAddDialog>
 
 <!-- EDIT DIALOG -->

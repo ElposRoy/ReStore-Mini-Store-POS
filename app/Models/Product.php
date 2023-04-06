@@ -14,8 +14,9 @@ class Product extends Model
     protected $fillable=[
         'product_name',
         'image',
-        'price' ,
-        'quantity',
+        'stock_level' ,
+        'unit',
+        'unit_type_id',
         'category_id',
         
     ];
@@ -30,5 +31,12 @@ class Product extends Model
 {
     return $this->belongsTo(Category::class);
 }
+
+
+public function unit_type()
+{
+    return $this->belongsTo(Unit_type::class);
+}
+
 
 }

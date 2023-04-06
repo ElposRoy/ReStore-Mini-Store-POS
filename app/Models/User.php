@@ -36,6 +36,15 @@ class User extends Authenticatable
 
     }
 
+    public function unit_types(): HasMany
+
+    {
+
+        return $this->hasMany(Unit_type::class);
+
+    }
+
+
     
     use HasApiTokens, HasFactory, Notifiable;
 

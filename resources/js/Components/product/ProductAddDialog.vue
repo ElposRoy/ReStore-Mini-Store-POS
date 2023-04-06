@@ -2,10 +2,9 @@
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 import ProductNewCategory from '@/Components/product/ProductNewCategory.vue';
+import ProductNewUnitType from '@/Components/product/ProductNewUnitType.vue';
 
-defineProps(['products','categories']);
-
-
+defineProps(['products','categories','unit_types']);
 </script>
 
 <script>
@@ -13,8 +12,9 @@ defineProps(['products','categories']);
 let form = useForm({
     image: null,
     product_name: '',
-    price:'',
-    quantity: '',
+    stock_level: '',
+    unit:'',
+    unit_type_id:'',
     category_id: '',
 });
 
@@ -24,6 +24,7 @@ export default {
 
       dialog: false,
       dialogCategory: false,
+      dialogUnitType: false,
     }),
 
     computed: {
@@ -35,6 +36,9 @@ export default {
         val || this.close()
       },
       dialogCategory (val) {
+        val || this.close()
+      },
+      dialogUnitType (val) {
         val || this.close()
       },
     },
@@ -52,7 +56,7 @@ export default {
       close () {
         this.dialog = false
         this.dialogCategory = false
-      
+        this.dialogUnitType = false
       },
       submitForm() {
         this.form.post(route('products.store'), { 
@@ -65,15 +69,28 @@ export default {
     openCategory() {
       this.dialogCategory=true
     },
+    openUnitType(){
+      this.dialogUnitType=true
+    },
 
-
-    categorySubmitForm($title) {
-      // console.log('asdasd',$title)
-
-          $title.post(route('categories.store'), { 
+    categoryUnitTypeSubmitForm(unit_type_form) {
+   
+      unit_type_form.post(route('unit_types.store'), { 
     onSuccess: () => {
       this.close();
-      this.form.reset();
+      unit_type_form.reset();
+    } 
+  });
+      },
+
+
+    categorySubmitForm(categoryForm) {
+      // console.log('asdasd',$title)
+
+      categoryForm.post(route('categories.store'), { 
+    onSuccess: () => {
+      this.close();
+      categoryForm.reset();
     } 
   });
       },
@@ -84,12 +101,25 @@ export default {
   <!-- ADD DIALOG -->
     <v-dialog
           v-model="dialog"
-          max-width="500px"
+          max-width="600px"
           persistent
         >
           <template v-slot:activator="{ props }">
         
+              <!-- New Unit Type-->
+              <v-btn 
+              color="primary"
+              dark
+              class="mb-2"
+              @click="openUnitType"
+             
+            >
+              New Unit Type
+            </v-btn>
+            <!-- New Unit Type -->
 
+            
+            <!-- New Category -->
             <v-btn 
               color="primary"
               dark
@@ -99,7 +129,9 @@ export default {
             >
               New Category
             </v-btn>
-            
+            <!-- New Category -->
+
+            <!-- New Product -->
             <v-btn
               color="primary"
               dark
@@ -108,7 +140,9 @@ export default {
             >
               New Product
             </v-btn>
-         
+            <!-- New Product -->
+
+
           </template>
           <v-card>
             <v-card-title>
@@ -151,7 +185,7 @@ export default {
                   <v-col
                     cols="12"
                     sm="6"
-                    md="12"
+                    md="6"
                   >
                     <v-text-field
                       v-model="form.product_name"
@@ -160,6 +194,36 @@ export default {
                     ></v-text-field>
                     <InputError :message="form.errors.product_name"/>
                   </v-col>
+
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="3"
+                  >
+
+                  <v-select
+                    v-model="form.unit_type_id"
+                    :items="unit_types"
+                    item-title="unit_type"
+                    item-value="id"
+                    label="Unit type"
+                    density="comfortable"
+                  ></v-select>
+                  <InputError :message="form.errors.unit_type_id"/>
+                  </v-col>
+
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="3"
+                  >
+                    <v-text-field
+                      v-model="form.unit"
+                      label="Units"
+                     
+                    ></v-text-field>
+                    <InputError :message="form.errors.unit"/>
+                  </v-col>
                 
                   <v-col
                     cols="12"
@@ -167,32 +231,22 @@ export default {
                     md="4"
                   >
                     <v-text-field
-                      v-model="form.price"
-                      label="Price"
+                      v-model="form.stock_level"
+                      label="Stock Level"
                     ></v-text-field>
-                    <InputError :message="form.errors.price"/>
+                    <InputError :message="form.errors.stock_level"/>
                   </v-col>
+                
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="form.quantity"
-                      label="Quantity"
-                    ></v-text-field>
-                    <InputError :message="form.errors.quantity"/>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="12"
+                    md="8"
                   >
 
                   <v-select
                     v-model="form.category_id"
                     :items="categories"
-                    item-text="title"
+                    item-title="title"
                     item-value="id"
                     label="Category"
                     density="comfortable"
@@ -231,6 +285,16 @@ export default {
      @closeDialog="dialogCategory=false" 
      @categorySubmitForm="categorySubmitForm">
      </ProductNewCategory>
+
+
+     <ProductNewUnitType
+     :unit_types="unit_types" 
+     :dialogUnitType="dialogUnitType" 
+     @closeDialog="dialogUnitType=false" 
+     @categoryUnitTypeSubmitForm="categoryUnitTypeSubmitForm">
+     >
+     </ProductNewUnitType>
+    
 
 
  </template>

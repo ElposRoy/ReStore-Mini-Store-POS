@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Category;
+use App\Models\Unit_type;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Product;
@@ -16,8 +17,9 @@ class ProductController extends Controller
     public function index(): Response
     {
         return Inertia::render('Products/Index', [
-            'products' => Product::with(['category'])->paginate(),
+            'products' => Product::with(['category','unit_type'])->paginate(),
             'categories'=>Category::all(),
+            'unit_types'=>Unit_type::all(),
         ]);
     }
 
@@ -42,8 +44,9 @@ class ProductController extends Controller
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'image' => 'required|image', // ensure the uploaded file is an image
-            'price' => 'required|numeric|max:999999.99',
-            'quantity' => 'required|integer|max:255',
+            'stock_level' => 'required|numeric|max:999.99',
+            'unit'=>'required|numeric|max:255',
+            'unit_type_id' => 'required|integer|min:1|max:255',
             'category_id' => 'required|integer|min:1|max:255',
           
         ]);
@@ -59,8 +62,9 @@ class ProductController extends Controller
         $request->user()->products()->create([
             'product_name' => $validated['product_name'],
             'image' => $path, // save the file path in the database
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
+            'stock_level' => $validated['stock_level'],
+            'unit'=> $validated['unit'],
+            'unit_type_id' =>  $validated['unit_type_id'],
             'category_id' => $validated['category_id'],
         ]);
 
