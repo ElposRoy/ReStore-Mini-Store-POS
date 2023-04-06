@@ -213,10 +213,9 @@ export default {
  
           <ProductEditDialog
           :products="products"
-          :categories="categories"
-          :unit_types="unit_types"
-          :dialogEdit="dialogEdit"
           
+          :dialogEdit="dialogEdit"
+        
           @closeDialog="dialogEdit=false"
           @editSubmitForm="editSubmitForm">
 
