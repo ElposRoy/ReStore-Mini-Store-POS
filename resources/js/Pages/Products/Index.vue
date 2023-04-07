@@ -13,8 +13,13 @@ defineProps(['products','categories','unit_types']);
 
 let editForm = useForm({
    
+    image: null,
+    id: null,
     product_name: '',
-  
+    stock_level: '',
+    unit:'',
+    unit_type_id:'',
+    category_id: '',
 });
 
 export default {
@@ -68,10 +73,17 @@ export default {
     },
  
     openEdit(item) {
-   
+
+      editForm.id=item.columns.id;
+      editForm.image=item.columns.image;
+      editForm.product_name=item.columns.product_name;
+      editForm.unit=item.columns.unit;
+      editForm.stock_level=item.columns.stock_level;
+      editForm.unit_type_id=item.columns.unit_type.id;
+      editForm.category_id=item.columns.category.id
+
     // this.editForm.image=item.columns.image;
     // this.editForm.id=item.columns.id;
-    // this.editForm.product_name=item.columns.product_name;
     // this.editForm.price=item.columns.price;
     // this.editForm.quantity=item.columns.quantity;
     // this.editForm.category_id=item.columns.category.id;
@@ -105,7 +117,6 @@ export default {
 },
 
        editSubmitForm() {
-       
               router.post(`/products/${editForm.id}`, {
               _method: 'put',
                 ...this.editForm
@@ -155,7 +166,7 @@ export default {
   <template v-slot:[`item.image`]`="{ item }">
   
     <v-avatar
-      size="60"
+      size="80"
       rounded="0"
       class="p-2"
     >
@@ -212,10 +223,12 @@ export default {
 
  
           <ProductEditDialog
-          :products="products"
           
+          :products="products"
+          :categories="categories"
+          :unit_types="unit_types"
           :dialogEdit="dialogEdit"
-        
+          :editForm="editForm"
           @closeDialog="dialogEdit=false"
           @editSubmitForm="editSubmitForm">
 
