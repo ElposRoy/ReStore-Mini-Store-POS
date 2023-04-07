@@ -5,23 +5,19 @@ import { useForm } from '@inertiajs/vue3';
 
 defineEmits(['closeDialog','editSubmitForm'])
 
-defineProps(['dialogEdit','products']);
+defineProps(['dialogEdit','products','editForm','categories','unit_types']);
 </script>
 
 <script>
 
-let editForm = useForm({
-   
-    product_name: '',
-  
-});
 
 </script>
  <template>
   <!-- EDIT DIALOG -->
+  
   <v-dialog
           v-model="dialogEdit"
-          max-width="500px"
+          max-width="550px"
           persistent
         >
           <v-card>
@@ -33,15 +29,29 @@ let editForm = useForm({
               <form @submit.prevent="submitProducts">
               <v-container>
                 <v-row>
-                  <!-- <v-col
+                  <v-col
                     cols="12"
                     sm="6"
-                    md="12"
+                    md="3"
+                  >
+                  <v-avatar
+                        size="100"
+                        rounded="0"
+                        class="p-2"
+                      >
+                        <v-img cover :src="'http://127.0.0.1:8000/'+editForm.image"></v-img>
+                      </v-avatar> 
+
+                  </v-col> 
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="8"
                   >
             
 
                   <div class="mb-4">
-                    <label for="file" class="block font-medium text-gray-700 mb-3">FILE</label>
+                    <label for="file" class="block font-medium text-gray-700 mb-3">Change Image</label>
                     <input
                         @input="editForm.image=$event.target.files[0]"
                         type="file"
@@ -55,7 +65,7 @@ let editForm = useForm({
                 </div> 
 
 
-                  </v-col> -->
+                  </v-col> 
 
                   <v-col
                     cols="12"
@@ -70,7 +80,7 @@ let editForm = useForm({
                     <InputError :message="editForm.errors.product_name"/>
                   </v-col>
 
-                  <!-- <v-col
+                  <v-col
                     cols="12"
                     sm="6"
                     md="3"
@@ -85,9 +95,9 @@ let editForm = useForm({
                     density="comfortable"
                   ></v-select>
                   <InputError :message="editForm.errors.unit_type_id"/>
-                  </v-col>
+                  </v-col> 
 
-                  <v-col
+                   <v-col
                     cols="12"
                     sm="6"
                     md="3"
@@ -99,8 +109,9 @@ let editForm = useForm({
                     ></v-text-field>
                     <InputError :message="editForm.errors.unit"/>
                   </v-col>
-                
-                  <v-col
+               
+
+                 <v-col
                     cols="12"
                     sm="6"
                     md="4"
@@ -111,7 +122,7 @@ let editForm = useForm({
                     ></v-text-field>
                     <InputError :message="editForm.errors.stock_level"/>
                   </v-col>
-                
+               
                   <v-col
                     cols="12"
                     sm="6"
@@ -127,7 +138,7 @@ let editForm = useForm({
                     density="comfortable"
                   ></v-select>
                   <InputError :message="editForm.errors.category_id"/>
-                  </v-col> -->
+                  </v-col> 
                 </v-row>
               </v-container>
               </form>
@@ -145,7 +156,7 @@ let editForm = useForm({
               <v-btn
                 color="blue-darken-1"
                 variant="text"
-                @click=""
+                @click="$emit('editSubmitForm',editForm)"
               >
                 Save
               </v-btn>

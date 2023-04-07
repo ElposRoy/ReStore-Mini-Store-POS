@@ -156,7 +156,17 @@ export default {
                   <v-col
                     cols="12"
                     sm="6"
-                    md="12"
+                    md="3"
+                  >
+                  <v-avatar color="grey" size="80">
+                    <span class="text-h5">IMG</span>
+                  </v-avatar>
+                  </v-col> 
+
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="8"
                   >
                  <!-- <v-file-input
                     :value="form.file"
@@ -166,7 +176,7 @@ export default {
                   ></v-file-input> -->
 
                   <div class="mb-4">
-                    <label for="file" class="block font-medium text-gray-700 mb-3">FILE</label>
+                    <label for="file" class="block font-medium text-gray-700 mb-3">Add Image</label>
                     <input
                         @input="form.image=$event.target.files[0]"
                         type="file"
