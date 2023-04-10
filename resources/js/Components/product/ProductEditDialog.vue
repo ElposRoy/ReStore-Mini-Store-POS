@@ -1,17 +1,11 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
-import { useForm } from '@inertiajs/vue3';
-
 
 defineEmits(['closeDialog','editSubmitForm'])
 
 defineProps(['dialogEdit','products','editForm','categories','unit_types']);
 </script>
 
-<script>
-
-
-</script>
  <template>
   <!-- EDIT DIALOG -->
   
