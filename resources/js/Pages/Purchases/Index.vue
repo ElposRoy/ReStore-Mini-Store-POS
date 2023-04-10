@@ -8,9 +8,6 @@ import {useForm, Head } from '@inertiajs/vue3';
 
 </script>
 
-<script>
-
-</script>
  
 <template>
     <Head title="Purchases" />
