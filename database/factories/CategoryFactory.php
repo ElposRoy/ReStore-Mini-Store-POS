@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Factories;
-
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +17,8 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'user_id' => 1,
-            // 'title'=> fake()->firstName(),
+             'user_id' => User::inRandomOrder()->first()->id,
+             'title'=> fake()->word(),
             
         ];
     }
