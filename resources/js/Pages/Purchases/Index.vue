@@ -1,30 +1,39 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3'
 import {useForm, Head } from '@inertiajs/vue3';
 
+defineProps(['purchases']);
 </script>
 
 <script>
+function formatDate(dateString) {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${month} ${day}, ${year}`;
+}
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
     search: '',
     headers: [
-      {
-        title: 'Dessert (100g serving)',
-        align: 'start',
-        sortable: false,
-        key: 'name',
-      },
-      { title: 'Calories', key: 'calories' },
-      { title: 'Fat (g)', key: 'fat' },
-      { title: 'Carbs (g)', key: 'carbs' },
-      { title: 'Protein (g)', key: 'protein' },
+    { title: 'ID', key: 'id', align: ' d-none' },
+      { title: 'Image', align: 'start', sortable: false, key: 'image'},
+      { title: 'Product', key: 'product', align: 'center'},
+      { title: 'Original Price', key: 'original_price' },
+      { title: 'Sale Price', key: 'sale_price' },
+      { title: 'Quantity', key: 'quantity'},
+      { title: 'Date Purchased', key: 'purchased_at'},
+      { title: 'Expiration Date', key: 'expired_at'},
       { title: 'Actions', key: 'actions', sortable: false },
     ],
     desserts: [],
@@ -47,7 +56,7 @@ export default {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Purchase' : 'Edit Purchase'
     },
   },
 
@@ -66,78 +75,7 @@ export default {
 
   methods: {
     initialize () {
-      this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ]
+      
     },
 
     editItem (item) {
@@ -191,16 +129,49 @@ export default {
       <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="purchases.data"
     :search="search"
-    :sort-by="[{ key: 'calories', order: 'asc' }]"
+    :sort-by="[{ key: 'purchased_at', order: 'desc' }]"
     class="elevation-1"
   >
+  <template v-slot:[`item.image`]`="{ item }">
+  
+  <v-avatar
+    size="80"
+    rounded="0"
+    class="p-2"
+  >
+    <v-img cover :src="'http://127.0.0.1:8000/'+item.columns.product.image"></v-img>
+  </v-avatar> 
+     <!-- <img :src="'http://127.0.0.1:8000/'+item.file" alt=""> -->
+      </template>
+
+      <template v-slot:[`item.product`]`="{ item }" >
+ {{ item.columns.product.product_name}}
+        </template>
+
+        <template v-slot:[`item.original_price`]`="{ item }" >
+          ₱ {{ item.columns.original_price}}
+        </template>
+
+        <template v-slot:[`item.sale_price`]`="{ item }" >
+          ₱ {{ item.columns.sale_price}}
+        </template>
+
+        <template v-slot:[`item.purchased_at`]`="{ item }" >
+          {{ formatDate(item.columns.purchased_at) }}
+        </template>
+
+        <template v-slot:[`item.expired_at`]`="{ item }" >
+          {{ formatDate(item.columns.expired_at) }}
+        </template>
+
+
     <template v-slot:top>
       <v-toolbar
         flat
       >
-        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-toolbar-title>STORE PURCHASES</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -225,7 +196,7 @@ export default {
               class="mb-2"
               v-bind="props"
             >
-              New Item
+              New Purchase
             </v-btn>
           </template>
           <v-card>
