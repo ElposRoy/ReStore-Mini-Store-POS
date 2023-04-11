@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Category;
-use App\Models\Unit_type;
+use App\Models\UnitType;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Product;
@@ -19,7 +19,7 @@ class ProductController extends Controller
         return Inertia::render('Products/Index', [
             'products' => Product::with(['category','unit_type'])->paginate(),
             'categories'=>Category::all(),
-            'unit_types'=>Unit_type::all(),
+            'unit_types'=>UnitType::all(),
         ]);
     }
 

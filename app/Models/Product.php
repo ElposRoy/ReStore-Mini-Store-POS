@@ -35,7 +35,7 @@ class Product extends Model
 
 public function unit_type()
 {
-    return $this->belongsTo(Unit_type::class);
+    return $this->belongsTo(UnitType::class);
 }
 
 
