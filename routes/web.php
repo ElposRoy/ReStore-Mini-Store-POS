@@ -50,7 +50,7 @@ Route::resource('orders', OrderController::class) //Order Link
 ->middleware(['auth', 'verified']);
 
 
-Route::resource('chirps', ChirpController::class)
+Route::resource('chirps', ChirpController::class) //Chirp Controller
 ->only(['index', 'store', 'update','destroy'])
 ->middleware(['auth', 'verified']);
 
