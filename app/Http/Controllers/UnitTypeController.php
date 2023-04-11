@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Unit_type;
+use App\Models\UnitType;
 use Illuminate\Http\Request;
 
 class UnitTypeController extends Controller
@@ -42,7 +42,7 @@ class UnitTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(unit_type $unit_type)
+    public function show(UnitType $unit_type)
     {
         //
     }
@@ -50,7 +50,7 @@ class UnitTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(unit_type $unit_type)
+    public function edit(UnitType $unit_type)
     {
         //
     }
@@ -58,7 +58,7 @@ class UnitTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, unit_type $unit_type)
+    public function update(Request $request, UnitType $unit_type)
     {
         //
     }
@@ -66,7 +66,7 @@ class UnitTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(unit_type $unit_type)
+    public function destroy(UnitType $unit_type)
     {
         //
     }
