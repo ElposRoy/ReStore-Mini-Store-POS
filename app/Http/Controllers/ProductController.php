@@ -18,8 +18,8 @@ class ProductController extends Controller
     {
         return Inertia::render('Products/Index', [
             'products' => Product::with(['category','unit_type'])->paginate(),
-            'categories'=>Category::all(),
-            'unit_types'=>UnitType::all(),
+            'categories'=> Category::all(),
+            'unit_types'=> UnitType::all(),
         ]);
     }
 

@@ -28,15 +28,19 @@ class Product extends Model
 
 
     public function category()
-{
+    {
     return $this->belongsTo(Category::class);
-}
+    }
 
 
-public function unit_type()
-{
-    return $this->belongsTo(UnitType::class);
-}
+    public function unit_type()
+    {
+        return $this->belongsTo(UnitType::class);
+    }
 
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 
 }
