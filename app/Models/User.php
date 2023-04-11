@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     {
 
-        return $this->hasMany(Unit_type::class);
+        return $this->hasMany(UnitType::class);
 
     }
 
