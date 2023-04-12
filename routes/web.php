@@ -55,8 +55,6 @@ Route::resource('chirps', ChirpController::class) //Chirp Controller
 ->middleware(['auth', 'verified']);
 
 
-
-
 Route::resource('categories', CategoryController::class) //Categories ROUTE
 ->only(['index','create', 'store', 'update', 'destroy'])
 ->middleware(['auth', 'verified']);
