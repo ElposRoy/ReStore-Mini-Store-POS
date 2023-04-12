@@ -1,3 +1,4 @@
+
 <script setup>
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
