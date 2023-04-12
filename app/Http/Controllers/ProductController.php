@@ -67,7 +67,8 @@ class ProductController extends Controller
             'unit_type_id' =>  $validated['unit_type_id'],
             'category_id' => $validated['category_id'],
         ]);
-
+        
+        
        
 
 
