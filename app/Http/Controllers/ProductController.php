@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function index(): Response
     {
         return Inertia::render('Products/Index', [
-            'products' => Product::with(['category','unit_type'])->paginate(),
+            'products' => Product::with(['category','unit_type','purchases'])->paginate(),
             'categories'=> Category::all(),
             'unit_types'=> UnitType::all(),
         ]);
@@ -41,6 +41,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
     //  dd($request->toArray());
+
+    try {
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'image' => 'required|image', // ensure the uploaded file is an image
@@ -68,10 +70,9 @@ class ProductController extends Controller
             'category_id' => $validated['category_id'],
         ]);
         
-        
-       
-
-
+    } catch (\Throwable $th) {
+        throw $th;
+    }
     }
 
     /**

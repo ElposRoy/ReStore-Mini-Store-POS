@@ -1,9 +1,9 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 
-defineEmits(['saveRestock']);
+defineEmits(['saveRestock','close']);
 
-defineProps([ 'dialog','restockForm','purchases','products' ]);
+defineProps([ 'dialog','restockForm','purchases','products','title']);
 
 
 </script>
@@ -21,13 +21,14 @@ defineProps([ 'dialog','restockForm','purchases','products' ]);
               dark
               class="mb-2"
               v-bind="props"
+             
             >
               New Purchase
             </v-btn>
           </template>
           <v-card>
             <v-card-title>
-              <span class="text-h5">Restock Product</span>
+              <span class="text-h5">{{ title }}</span>
             </v-card-title>
 
             <v-card-text>
@@ -126,7 +127,7 @@ defineProps([ 'dialog','restockForm','purchases','products' ]);
               <v-btn
                 color="blue-darken-1"
                 variant="text"
-                @click=" dialog=false"
+                @click="$emit('close',dialog=false)"
               >
                 Cancel
               </v-btn>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('sale_price');
             $table->integer('quantity');
             $table->date('purchased_at');
-            $table->date('expired_at');
+            $table->date('expired_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
