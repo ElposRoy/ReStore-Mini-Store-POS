@@ -25,6 +25,7 @@ let editForm = useForm({
 export default {
   
     data: () => ({
+   
       dialog: false,
       dialogDelete: false,
       dialogEdit: false,
@@ -44,6 +45,7 @@ export default {
         { title: 'Stock Level', key: 'stock_level',  align: 'center' },
         { title: 'Unit', key: 'unit',  align: 'center' },
         { title: 'Unit Type', key: 'unit_type',  align: 'center' },
+        { title: 'Quantity', key: 'purchases',  align: 'center' },
         { title: 'Actions', key: 'actions', sortable: false },
       ],
       // prod:{}
@@ -70,6 +72,13 @@ export default {
   methods: {
     initialize () {
   
+    },
+    getQuantity(item){
+      console.log(item)
+      return item.purchases?.reduce((acc,row)=>{
+        acc+=row.quantity
+        return acc
+      },0)
     },
  
     openEdit(item) {
@@ -190,58 +199,66 @@ export default {
  {{ item.columns.unit_type.unit_type}}
         </template>
 
-
-    <template v-slot:top>
-
-      
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>STORE PRODUCTS</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+        <template v-slot:[`item.purchases`]`="{ item }" >
+ {{ getQuantity(item.columns) }}
+        </template>
 
 
+  <!-- TOP TABLE -->
+      <template v-slot:top>
 
-          <ProductAddDialog 
-        :categories="categories"
-        :unit_types="unit_types"
-        > <!-- Add this if splitting contents -->
-          </ProductAddDialog>
+        
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>STORE PRODUCTS</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+          <v-spacer></v-spacer>
+          <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
 
-          <ProductEditDialog
-          
-          :products="products"
+
+
+            <ProductAddDialog 
           :categories="categories"
           :unit_types="unit_types"
-          :dialogEdit="dialogEdit"
-          :editForm="editForm"
-          @closeDialog="dialogEdit=false"
-          @editSubmitForm="editSubmitForm">
+          > <!-- Add this if splitting contents -->
+            </ProductAddDialog>
 
-          </ProductEditDialog>
+            <ProductEditDialog
+            
+            :products="products"
+            :categories="categories"
+            :unit_types="unit_types"
+            :dialogEdit="dialogEdit"
+            :editForm="editForm"
+            @closeDialog="dialogEdit=false"
+            @editSubmitForm="editSubmitForm">
 
-          <ProductDeleteDialog 
-          :dialogDelete="dialogDelete"
-          :deleteID="deleteID"
-          @closeDelete="dialogDelete=false"
-          @deleteItemConfirm="deleteItemConfirm"
-          >
-          </ProductDeleteDialog>
+            </ProductEditDialog>
 
-      </v-toolbar>
-    </template>
+            <ProductDeleteDialog 
+            :dialogDelete="dialogDelete"
+            :deleteID="deleteID"
+            @closeDelete="dialogDelete=false"
+            @deleteItemConfirm="deleteItemConfirm"
+            >
+            </ProductDeleteDialog>
+
+        </v-toolbar>
+      </template>
+  <!-- TOP TABLE -->
+
+    <!-- ACTION BUTTON -->
     <template v-slot:item.actions="{ item }">
       <v-icon
         size="small"
@@ -257,6 +274,9 @@ export default {
         mdi-delete
       </v-icon>
     </template>
+     <!-- ACTION BUTTON -->
+
+      <!-- RESET -->
     <template v-slot:no-data>
       <v-btn
         color="primary"
@@ -265,9 +285,31 @@ export default {
         Reset
       </v-btn>
     </template>
+     <!-- RESET -->
+
   </v-data-table>
         </div>
+      
+  
 
+    <v-snackbar
+      v-model="snackbar"
+      multi-line
+    >
+      {{ text }}
+
+      <template v-slot:actions>
+        <v-btn
+          color="red"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
+  
    
   
     </AuthenticatedLayout>

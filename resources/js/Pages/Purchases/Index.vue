@@ -40,6 +40,7 @@ function formatDate(dateString) {
 export default {
   data: () => ({
     dialog: false,
+    dialogIndex: -1,
     dialogDelete: false,
     search: '',
     headers: [
@@ -58,8 +59,10 @@ export default {
   }),
 
   computed: {
-    
-  },
+      formTitle () {
+        return this.dialogIndex === -1 ? 'New Purchase' : 'Edit Purchase'
+      },
+    },
 
   watch: {
     dialog (val) {
@@ -80,12 +83,19 @@ export default {
     },
 
     editItem (item) {
-   
-   
+      console.log(item)
+      // this.dialogIndex=this.purchases.data.indexOf(item)
+    restockForm.product_id=item.columns.id;
+    restockForm.original_price=item.columns.original_price;
+    restockForm.sale_price=item.columns.sale_price;
+    restockForm.quantity=item.columns.quantity;
+    restockForm.purchasedDate=item.columns.purchased_at;
+    restockForm.expirationDate=item.columns.expired_at;
+    this.dialog=true;
     },
 
     deleteItem (item) {
-  
+      
     },
 
     deleteItemConfirm () {
@@ -93,6 +103,11 @@ export default {
       this.closeDelete()
     },
 
+    close(){
+      this.dialogIndex=-1
+      this.dialog=false
+     this.restockForm.reset()
+    },
    
     closeDelete () {
       this.dialogDelete = false
@@ -105,11 +120,11 @@ export default {
           this.restockForm.reset()
         },
         onError: () => {
-          // this.dialog= true
+          this.dialog= true
         } 
 
       });
-      this.dialog= true
+    
     },
   },
 }
@@ -131,7 +146,7 @@ export default {
   <template v-slot:[`item.image`]`="{ item }">
   
   <v-avatar
-    size="80"
+    size="60"
     rounded="0"
     class="p-2"
   >
@@ -156,9 +171,9 @@ export default {
           {{ formatDate(item.columns.purchased_at) }}
         </template>
 
-        <template v-slot:[`item.expired_at`]`="{ item }" >
-          {{ formatDate(item.columns.expired_at) }}
-        </template>
+        <template v-slot:[`item.expired_at`]`="{ item }">
+  {{ item.columns.expired_at ? formatDate(item.columns.expired_at) : '' }}
+</template>
 
 
     <template v-slot:top>
@@ -185,6 +200,8 @@ export default {
       :purchases="purchases"
       :restockForm="restockForm"
       :dialog="dialog"
+      :title="formTitle"
+      @close="dialog=false"
       @saveRestock="saveRestock"
       >
     </PurchaseRestockDialog>
@@ -203,11 +220,11 @@ export default {
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:item.actions="{ item, index }">
       <v-icon
         size="small"
         class="me-2"
-        @click="editItem(item.raw)"
+        @click="dialogIndex=index; editItem(item)"
       >
         mdi-pencil
       </v-icon>
