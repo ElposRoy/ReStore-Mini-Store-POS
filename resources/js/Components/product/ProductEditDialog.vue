@@ -12,13 +12,13 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
       isNoImage: false,
       baseurl: location.origin,
       oldImage: '' ,
-      ImagePath: ''
+      
     };
   },
   watch: {
     isNoImage(newValue) {
       const currentImage = this.editForm.image;
-     
+      
       if (newValue) {
          //checked checkbox
         this.oldImage = currentImage;
@@ -28,7 +28,7 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
        //unchecked checkbox
         this.editForm.image = this.oldImage || currentImage ;
         this.oldImage = '';
-        this.ImagePath = '';
+        
       }
     }
   }
