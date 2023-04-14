@@ -25,8 +25,9 @@ let editForm = useForm({
 export default {
   
     data: () => ({
-   
+  
       dialog: false,
+      snackbar: false,
       dialogDelete: false,
       dialogEdit: false,
       deleteID: null,
@@ -70,11 +71,41 @@ export default {
   },
 
   methods: {
+ 
     initialize () {
   
     },
+
+    rowClass(item) {
+
+      if (item.stock_level > this.getQuantity(item)) {
+       
+        return 'red'
+      }
+        else{
+         
+          return 'green'
+        } 
+
+
+      // console.log(item.stock_level)
+      // if(item.stock_level <= this.getQuantity(item)){
+      //   console.log('if')
+      //   return 'color: red';
+
+      // }
+     
+      //  else{
+      //   console.log('else')
+      //   return 'color:green';
+      //  }
+      },
+     
+
+
+
     getQuantity(item){
-      console.log(item)
+
       return item.purchases?.reduce((acc,row)=>{
         acc+=row.quantity
         return acc
@@ -126,7 +157,9 @@ export default {
 },
 
        editSubmitForm() {
+
               router.post(`/products/${editForm.id}`, {
+
               _method: 'put',
                 ...this.editForm
 
@@ -160,6 +193,7 @@ export default {
   }
 </script>
  
+
 <template>
     <Head title="Products" />
  
@@ -169,6 +203,7 @@ export default {
     :headers="headers"
     :items="products.data"
     :search="search"
+    :item-class="rowClass"
     :sort-by="[{ key: 'product_name', order: 'asc' }]"
     class="elevation-1"
   >
@@ -181,7 +216,7 @@ export default {
     >
       <v-img cover :src="'http://127.0.0.1:8000/'+item.columns.image"></v-img>
     </v-avatar> 
-       <!-- <img :src="'http://127.0.0.1:8000/'+item.file" alt=""> -->
+
         </template>
 
         <!-- <template v-slot:[`item.price`]`="{ item }">
@@ -191,17 +226,21 @@ export default {
         </template> -->
 
         <template v-slot:[`item.category`]`="{ item }" >
- {{ item.columns.category.title }}
+          {{ item.columns.category.title }}
         </template>
 
         
         <template v-slot:[`item.unit_type`]`="{ item }">
- {{ item.columns.unit_type.unit_type}}
+        {{ item.columns.unit_type.unit_type}}
         </template>
 
         <template v-slot:[`item.purchases`]`="{ item }" >
- {{ getQuantity(item.columns) }}
+          <v-chip :color="rowClass(item.columns)">   
+        {{ getQuantity(item.columns) }}
+      </v-chip>
         </template>
+
+        
 
 
   <!-- TOP TABLE -->
@@ -292,7 +331,8 @@ export default {
       
   
 
-    <v-snackbar
+
+        <v-snackbar
       v-model="snackbar"
       multi-line
     >
@@ -308,7 +348,6 @@ export default {
         </v-btn>
       </template>
     </v-snackbar>
-
   
    
   

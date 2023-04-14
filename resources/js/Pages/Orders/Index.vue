@@ -23,6 +23,11 @@ defineProps(['products','categories','unit_types']);
           title: 'Item #3',
           value: 3,
         },
+        {
+          title: 'Item #4',
+          value: 4,
+        },
+        
       ],
     }),
   }
@@ -32,12 +37,13 @@ defineProps(['products','categories','unit_types']);
     <Head title="Orders" />
  
     <AuthenticatedLayout>
-      <v-container>
-                <v-row>
+     <div class="m-2">
+      <v-row>
                   <v-col cols="12" sm="2" md="2"
                   >
                   <v-card
-    class="mx-auto"
+    class="mx-auto "
+    
     max-width="300"
   >
   <template v-slot:title>
@@ -79,7 +85,9 @@ defineProps(['products','categories','unit_types']);
                     
                   </v-col>
                   </v-row>
-                  </v-container>
+     </div>
+           
+                  
     </AuthenticatedLayout>
     
     

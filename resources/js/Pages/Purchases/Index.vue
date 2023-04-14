@@ -4,7 +4,7 @@ import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { router } from '@inertiajs/vue3'
 import {useForm, Head } from '@inertiajs/vue3';
-import PurchaseRestockDialog from '@/Components/purchases/PurchaseRestockDialog.vue';
+import PurchaseAddEditDialog from '@/Components/purchases/PurchaseAddEditDialog.vue';
 
 defineProps(['purchases','products']);
 </script>
@@ -40,6 +40,7 @@ function formatDate(dateString) {
 export default {
   data: () => ({
     dialog: false,
+    snackbar: false,
     dialogIndex: -1,
     dialogDelete: false,
     search: '',
@@ -78,14 +79,16 @@ export default {
   },
 
   methods: {
+
+  
     initialize () {
       
     },
 
     editItem (item) {
-      console.log(item)
+    
       // this.dialogIndex=this.purchases.data.indexOf(item)
-    restockForm.product_id=item.columns.id;
+    restockForm.product_id=item.columns.product.id;
     restockForm.original_price=item.columns.original_price;
     restockForm.sale_price=item.columns.sale_price;
     restockForm.quantity=item.columns.quantity;
@@ -129,6 +132,9 @@ export default {
   },
 }
 </script>
+
+
+
 <template>
    <!-- :items-length="purchases.total" (For Data-table-server)--> 
     <Head title="Purchases" />
@@ -167,6 +173,9 @@ export default {
           ₱ {{ item.columns.sale_price}}
         </template>
 
+   
+
+
         <template v-slot:[`item.purchased_at`]`="{ item }" >
           {{ formatDate(item.columns.purchased_at) }}
         </template>
@@ -195,7 +204,7 @@ export default {
         hide-details
       ></v-text-field>
        
-      <PurchaseRestockDialog
+      <PurchaseAddEditDialog
       :products="products"
       :purchases="purchases"
       :restockForm="restockForm"
@@ -204,7 +213,7 @@ export default {
       @close="dialog=false"
       @saveRestock="saveRestock"
       >
-    </PurchaseRestockDialog>
+    </PurchaseAddEditDialog>
 
 
         <v-dialog v-model="dialogDelete" max-width="500px">
@@ -246,6 +255,22 @@ export default {
   </v-data-table>
       </div>
   
+      <v-snackbar
+      v-model="snackbar"
+      multi-line
+    >
+      {{ text }}
+
+      <template v-slot:actions>
+        <v-btn
+          color="red"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
    
   
     </AuthenticatedLayout>
