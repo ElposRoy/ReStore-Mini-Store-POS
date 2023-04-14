@@ -21,7 +21,7 @@ let form = useForm({
 
 export default {
     data: () => ({
-      snackbar: false,
+    
       text: ``,
       dialog: false,
       dialogCategory: false,
@@ -314,22 +314,6 @@ export default {
      </ProductNewUnitType>
     
 
-     <v-snackbar
-      v-model="snackbar"
-      multi-line
-    >
-      {{ text }}
-
-      <template v-slot:actions>
-        <v-btn
-          color="red"
-          variant="text"
-          @click="snackbar = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
 
 
  </template>

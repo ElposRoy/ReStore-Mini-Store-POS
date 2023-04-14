@@ -3,9 +3,38 @@ import InputError from '@/Components/InputError.vue';
 
 defineEmits(['closeDialog','editSubmitForm'])
 
-defineProps(['dialogEdit','products','editForm','categories','unit_types']);
+defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
 </script>
 
+<script>export default {
+  data() {
+    return {
+      isNoImage: false,
+      baseurl: location.origin,
+      oldImage: '' ,
+      ImagePath: ''
+    };
+  },
+  watch: {
+    isNoImage(newValue) {
+      const currentImage = this.editForm.image;
+     
+      if (newValue) {
+         //checked checkbox
+        this.oldImage = currentImage;
+        this.editForm.image = null;
+        
+      } else {
+       //unchecked checkbox
+        this.editForm.image = this.oldImage || currentImage ;
+        this.oldImage = '';
+        this.ImagePath = '';
+      }
+    }
+  }
+}
+
+</script>
  <template>
   <!-- EDIT DIALOG -->
   
@@ -23,20 +52,34 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types']);
               <form @submit.prevent="submitProducts">
               <v-container>
                 <v-row>
+                
                   <v-col
                     cols="12"
                     sm="6"
-                    md="3"
+                    md="12"
+                   style="display: flex; justify-content: center;"
                   >
+                
                   <v-avatar
-                        size="100"
+                        v-if="isNoImage"
+                        size="110"
                         rounded="0"
-                        class="p-2"
+                        class="p-1"
+                      
+                      >
+                      <v-img cover :src="baseurl+'/images/DefaultImage.png'"></v-img>
+                      </v-avatar>
+                  <v-avatar
+                        v-if="!isNoImage"
+                        size="110"
+                        rounded="0"
+                        class="p-1"
                       >
                         <v-img cover :src="'http://127.0.0.1:8000/'+editForm.image"></v-img>
                       </v-avatar> 
 
-                  </v-col> 
+                  </v-col>
+
                   <v-col
                     cols="12"
                     sm="6"
@@ -44,7 +87,14 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types']);
                   >
             
 
-                  <div class="mb-4">
+                
+                  </v-col> 
+                  <v-col
+                  cols="12"
+                  sm="6"
+                  md="12"
+                  >
+                  <div class="mb-4" v-if="!isNoImage">
                     <label for="file" class="block font-medium text-gray-700 mb-3">Change Image</label>
                     <input
                         @input="editForm.image=$event.target.files[0]"
@@ -55,12 +105,15 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types']);
                         placeholder="Enter your Image"
                         class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                     >
-                    <InputError :message="editForm.errors.image" />
                 </div> 
-
-
-                  </v-col> 
-
+                <InputError :message="editForm.errors.image" />
+            
+                  </v-col>
+                  <v-checkbox 
+                label="No Image"
+                v-model="isNoImage"
+              
+                ></v-checkbox>
                   <v-col
                     cols="12"
                     sm="6"
@@ -108,7 +161,7 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types']);
                  <v-col
                     cols="12"
                     sm="6"
-                    md="4"
+                    md="3"
                   >
                     <v-text-field
                       v-model="editForm.stock_level"
@@ -120,7 +173,7 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types']);
                   <v-col
                     cols="12"
                     sm="6"
-                    md="8"
+                    md="6"
                   >
 
                   <v-select
@@ -160,3 +213,5 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types']);
         
 <!-- EDIT DIALOG -->
  </template>
+
+ 

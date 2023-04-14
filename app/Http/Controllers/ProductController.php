@@ -21,6 +21,7 @@ class ProductController extends Controller
             'categories'=> Category::all(),
             'unit_types'=> UnitType::all(),
         ]);
+
     }
 
     /**
@@ -95,31 +96,67 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        
-        $validated = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'image' => 'required|image', // ensure the uploaded file is an image
-            'stock_level' => 'required|numeric|max:999.99',
-            'unit'=>'required|numeric|max:255',
-            'unit_type_id' => 'required|integer|min:1|max:255',
-            'category_id' => 'required|integer|min:1|max:255',
-        ]);
-        $image = $validated['image']; // get the uploaded file
-       
+ 
+    // $validated = $request->validate([
+    //     'product_name' => 'required|string|max:255',
+    //     'image' => 'nullable|image', // ensure the uploaded file is an image
+    //     'stock_level' => 'required|numeric|max:999.99',
+    //     'unit'=>'required|numeric|max:255',
+    //     'unit_type_id' => 'required|integer|min:1|max:255',
+    //     'category_id' => 'required|integer|min:1|max:255',
+    // ]);
+  
+   
+    // if ($request->hasFile('image')) {
+
+    //     $image = $validated['image']; // get the uploaded file
+    //     $image->storeAs('images',$image->getClientOriginalName()); // store the image in the storage public/images directory
+    //     $path = 'storage/images/'.$image->getClientOriginalName();
+    // } else {
+
+    //     $path = $product->image; // use the existing image path if no file is uploaded
+    // }
+    
+    // $product->update([
+    //     'product_name' => $validated['product_name'],
+    //     'image' => $path,
+    //     'stock_level' => $validated['stock_level'],
+    //     'unit'=> $validated['unit'],
+    //     'unit_type_id' =>  $validated['unit_type_id'],
+    //     'category_id' => $validated['category_id'],
+    // ]);
+
+    if ($request->hasFile('image')) {
+        $validateImage=$request->validate(['image'=>'image']);
+        $image = $validateImage['image']; // get the uploaded file
         $image->storeAs('images',$image->getClientOriginalName()); // store the image in the storage public/images directory
-        
         $path = 'storage/images/'.$image->getClientOriginalName();
+    } else {
+        $path = $product->image; // use the existing image path if no file is uploaded
+    }
 
 
-        $product->update([
-            'product_name' => $validated['product_name'],
-            'image' => $path, // save the file path in the database
-            'stock_level' => $validated['stock_level'],
-            'unit'=> $validated['unit'],
-            'unit_type_id' =>  $validated['unit_type_id'],
-            'category_id' => $validated['category_id'],
-        ]);
+    $validated = $request->validate([
+        'product_name' => 'required|string|max:255',
+        // 'image' => 'nullable|image',  //ensure the uploaded file is an image
+        'stock_level' => 'required|numeric|max:999.99',
+        'unit'=>'required|numeric|max:255',
+        'unit_type_id' => 'required|integer|min:1|max:255',
+        'category_id' => 'required|integer|min:1|max:255',
+    ]);
+  
 
+    $product->update([
+        'product_name' => $validated['product_name'],
+        'image' => $path,
+        'stock_level' => $validated['stock_level'],
+        'unit'=> $validated['unit'],
+        'unit_type_id' =>  $validated['unit_type_id'],
+        'category_id' => $validated['category_id'],
+    ]);
+
+
+    
       
     }
 
