@@ -40,7 +40,7 @@ class PurchaseController extends Controller
             'product_id' => 'required|integer|min:1|max:255',
             'original_price' => 'required|numeric|between:0,9999999.99',
             'sale_price' => 'required|numeric|between:0,9999999.99',
-            'quantity' => 'required|integer|max:255',
+            'quantity' => 'required|integer|between:0,9999999',
             'purchasedDate' => 'required|date_format:Y-m-d',
             'expirationDate' => 'nullable|date_format:Y-m-d',
         ]);
