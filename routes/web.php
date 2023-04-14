@@ -35,6 +35,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+
 Route::resource('products', ProductController::class) //Product ROUTE
     ->only(['index','create', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
