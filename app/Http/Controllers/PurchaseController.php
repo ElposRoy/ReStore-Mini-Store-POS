@@ -73,7 +73,7 @@ class PurchaseController extends Controller
      */
     public function edit(purchase $purchase)
     {
-        //
+      
     }
 
     /**
@@ -81,7 +81,14 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, purchase $purchase)
     {
-        //
+        dd($purchase->toArray());
+
+        try{
+
+        }
+        catch(\Throwable $th){
+            throw $th;
+        }
     }
 
     /**

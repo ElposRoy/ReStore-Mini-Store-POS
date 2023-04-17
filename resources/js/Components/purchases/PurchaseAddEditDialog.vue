@@ -1,9 +1,9 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 
-defineEmits(['saveRestock','close']);
+defineEmits(['saveRestock','editRestock','close']);
 
-defineProps([ 'dialog','restockForm','purchases','products','title']);
+defineProps(['dialog','restockForm','purchases','products','title','isEdit']);
 
 
 </script>
@@ -133,11 +133,21 @@ defineProps([ 'dialog','restockForm','purchases','products','title']);
               </v-btn>
            
               <v-btn
+                v-if="!isEdit"
                 color="blue-darken-1"
                 variant="text"
                 @click=" $emit('saveRestock', restockForm)"
               >
                 Save
+              </v-btn>
+
+              <v-btn
+                v-if="isEdit"
+                color="blue-darken-1"
+                variant="text"
+                @click=" $emit('editRestock', restockForm)"
+              >
+                Save Edit
               </v-btn>
 
             </v-card-actions>
