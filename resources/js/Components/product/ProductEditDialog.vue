@@ -6,7 +6,8 @@ defineEmits(['closeDialog','editSubmitForm'])
 defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
 </script>
 
-<script>export default {
+<script>
+export default {
   data() {
     return {
       isNoImage: false,
@@ -16,16 +17,17 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
     };
   },
   watch: {
+    
     isNoImage(newValue) {
       const currentImage = this.editForm.image;
       
       if (newValue) {
-         //checked checkbox
+         //checked checkbox to show upload image
         this.oldImage = currentImage;
-        this.editForm.image = null;
+        this.editForm.image = '';
         
       } else {
-       //unchecked checkbox
+       //unchecked checkbox to hide the upload image
         this.editForm.image = this.oldImage || currentImage ;
         this.oldImage = '';
         
@@ -203,6 +205,7 @@ defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
               <v-btn
                 color="blue-darken-1"
                 variant="text"
+                id="addButton"
                 @click="$emit('editSubmitForm',editForm)"
               >
                 Save

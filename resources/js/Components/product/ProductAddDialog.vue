@@ -60,6 +60,10 @@ export default {
         this.dialogUnitType = false
       },
       submitForm() {
+        if (this.form.processing) {
+            return false
+        }
+        
         this.form.post(route('products.store'), { 
   onSuccess: () => {
     this.close();
