@@ -13,6 +13,7 @@ defineProps(['purchases','products']);
 
 
 const restockForm = useForm ({
+    id:null,
     product_id: '',
     original_price: '',
     sale_price: '',
@@ -39,6 +40,7 @@ function formatDate(dateString) {
 
 export default {
   data: () => ({
+    isEdit: false,
     dialog: false,
     snackbar: false,
     dialogIndex: -1,
@@ -66,6 +68,7 @@ export default {
     },
 
   watch: {
+    
     dialog (val) {
       val || this.close()
     },
@@ -86,14 +89,18 @@ export default {
     },
 
     editItem (item) {
-    
+      
+      this.isEdit=true;
       // this.dialogIndex=this.purchases.data.indexOf(item)
+    restockForm.id=item.columns.id;
+    restockForm.product_id=item.columns.product.id;
     restockForm.product_id=item.columns.product.id;
     restockForm.original_price=item.columns.original_price;
     restockForm.sale_price=item.columns.sale_price;
     restockForm.quantity=item.columns.quantity;
     restockForm.purchasedDate=item.columns.purchased_at;
     restockForm.expirationDate=item.columns.expired_at;
+    
     this.dialog=true;
     },
 
@@ -107,9 +114,12 @@ export default {
     },
 
     close(){
+  
+      this.isEdit=false;
       this.dialogIndex=-1
       this.dialog=false
      this.restockForm.reset()
+   
     },
    
     closeDelete () {
@@ -117,18 +127,42 @@ export default {
   
     },
 
+  
+
    saveRestock() {
+    this.dialog=true
+    if (this.restockForm.processing) {
+            return false
+        }
          this.restockForm.post(route('purchases.store'), {
         onSuccess: () => {
           this.restockForm.reset()
         },
         onError: () => {
-          this.dialog= true
-        } 
-
+          this.dialog=true
+        }
       });
-    
     },
+
+    editRestock(){
+     
+          router.post(`/purchases/${this.restockForm.id}`, {
+        _method: 'put',
+        ...this.restockForm
+      }, {
+        onSuccess: () => {
+          this.close();
+          this.text = 'Successfully updated the product!'
+          this.snackbar = true
+        },
+        onError: () => {
+          this.text = 'Something went wrong!'
+          this.snackbar = true
+        } 
+      });
+    },
+
+
   },
 }
 </script>
@@ -208,10 +242,12 @@ export default {
       :products="products"
       :purchases="purchases"
       :restockForm="restockForm"
+      :isEdit="isEdit"
       :dialog="dialog"
       :title="formTitle"
       @close="dialog=false"
       @saveRestock="saveRestock"
+      @editRestock="editRestock"
       >
     </PurchaseAddEditDialog>
 
@@ -269,6 +305,7 @@ export default {
         >
           Close
         </v-btn>
+        
       </template>
     </v-snackbar>
    

@@ -156,20 +156,30 @@ export default {
   }
 },
 
-       editSubmitForm() {
+editSubmitForm() {
+  router.post(`/products/${this.editForm.id}`, {
+    _method: 'put',
+    ...this.editForm
+  }, {
+    onSuccess: () => {
+      this.close();
+      this.text = 'Successfully updated the product!'
+      this.snackbar = true
+    },
+    onError: () => {
+      this.text = 'Something went wrong!'
+      this.snackbar = true
+    } 
+  });
 
-              router.post(`/products/${editForm.id}`, {
-
-              _method: 'put',
-                ...this.editForm
-
+  
               // id: this.editForm.id,
               // image: this.editForm.image,
               // product_name: this.editForm.product_name,
               // price:this.editForm.price,
               // quantity: this.editForm.quantity,
               // category_id: this.editForm.category_id,
-            })
+
 
         //  this.editForm.put(route('products.update',this.editForm.id), { 
         //   onSuccess: () => {
@@ -177,17 +187,8 @@ export default {
         //   this.close();
         //     } 
         //   });
-     },
 
-    //  editSubmitForm() {
-    //      this.editForm.post((`/products/${this.editForm.id}`, this.editForm), { 
-    //       onSuccess: () => {
-    //         this.editForm.reset();
-    //       this.close();
-    //         } 
-    //       });
-    //  },
-
+  },
 
   },
   }
@@ -333,11 +334,14 @@ export default {
 
 
         <v-snackbar
-      v-model="snackbar"
+        :timeout="6000"
+        v-model="snackbar"
       multi-line
+      color="success"
+    
     >
+  
       {{ text }}
-
       <template v-slot:actions>
         <v-btn
           color="red"
@@ -347,7 +351,10 @@ export default {
           Close
         </v-btn>
       </template>
+
+
     </v-snackbar>
+
   
    
   
