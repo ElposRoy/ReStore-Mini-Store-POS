@@ -88,7 +88,7 @@ export default {
    
       unit_type_form.post(route('unit_types.store'), { 
     onSuccess: () => {
-      this.close();
+     
       unit_type_form.reset();
     } 
   });
@@ -100,7 +100,7 @@ export default {
 
       categoryForm.post(route('categories.store'), { 
     onSuccess: () => {
-      this.close();
+     
       categoryForm.reset();
     } 
   });
