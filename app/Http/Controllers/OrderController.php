@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\UnitType;
 use App\Models\order;
 use Illuminate\Http\Request;
 
@@ -14,8 +17,12 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Orders/Index', [
-          
+            'categories'=> Category::all(),
+            'unit_types'=> UnitType::all(),
         ]);
+
+
+
     }
 
     /**
