@@ -81,10 +81,28 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, purchase $purchase)
     {
-        dd($purchase->toArray());
+        // dd($request->toArray());
 
         try{
+            $validated=$request->validate([
+                'product_id' => 'nullable|integer|min:1|max:255',
+                'original_price' => 'required|numeric|between:0,9999999.99',
+                'sale_price' => 'required|numeric|between:0,9999999.99',
+                'quantity' => 'required|integer|between:0,9999999',
+                'purchasedDate' => 'required|date_format:Y-m-d',
+                'expirationDate' => 'nullable|date_format:Y-m-d',
+            ]);
 
+            $purchase->update([
+                'product_id' => $validated['product_id'],
+                'original_price' => $validated['original_price'],
+                'sale_price' => $validated['sale_price'],
+                'quantity'=> $validated['quantity'],
+                'purchase_at' =>  $validated['purchasedDate'],
+                'expired_at' => $validated['expirationDate'],
+            ]);
+        
+            
         }
         catch(\Throwable $th){
             throw $th;
