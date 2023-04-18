@@ -1,35 +1,35 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import { router } from '@inertiajs/vue3'
 import { useForm, Head } from '@inertiajs/vue3';
-defineProps(['products','categories','unit_types']);
+defineProps(['categories']);
+
+const selectedCategory = useForm ({
+  categoryId : null,
+});
 </script>
 
 <script>
+
   export default {
     data: () => ({
-      items: [
-        {
-          title: 'Item #1',
-          value: 1,
-        },
-        {
-          title: 'Item #2',
-          value: 2,
-        },
-        {
-          title: 'Item #3',
-          value: 3,
-        },
-        {
-          title: 'Item #4',
-          value: 4,
-        },
-        
-      ],
+    
+  
     }),
+    
+  computed: {
+
+  },
+  watch: {
+    
+  },
+
+  methods: {
+    selectCategory(item){
+      console.log(item)
+    }
+  },
   }
 </script>
 
@@ -46,19 +46,27 @@ defineProps(['products','categories','unit_types']);
     
     max-width="300"
   >
-  <template v-slot:title>
-                    CATEGORIES
-                  </template>
-    <v-list :items="items"></v-list>
+  <v-card-text class="bg-red-darken-4"> CATEGORIES</v-card-text>
+
+  
+    <v-list
+      v-model="selectedCategory.categoryId"
+      height="500" class="overflow-auto "
+      :items="categories"
+      item-title="title"
+      item-value="id"
+      @click="selectCategory()"
+    ></v-list>
+
   </v-card>
                     
                   </v-col>
 
                   <v-col cols="12" sm="7" md="7"
                   >
-               <v-card class="mx-auto" prepend-icon="mdi-home">
+               <v-card class="mx-auto" prepend-icon="mdi-archive">
                   <template v-slot:title>
-                    SELECTION OF PRODUCTS
+                    PRODUCTS
                   </template>
 
                   <v-card-text>
@@ -72,7 +80,7 @@ defineProps(['products','categories','unit_types']);
                  <v-card
                     class="mx-auto"
                     
-                    prepend-icon="mdi-home"
+                    prepend-icon="mdi-basket"
                   >
                     <template v-slot:title>
                       CART AREA

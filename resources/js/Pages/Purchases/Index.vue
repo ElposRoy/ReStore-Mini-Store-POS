@@ -40,6 +40,7 @@ function formatDate(dateString) {
 
 export default {
   data: () => ({
+    baseurl: location.origin,
     isEdit: false,
     dialog: false,
     snackbar: false,
@@ -93,8 +94,7 @@ export default {
       this.isEdit=true;
       // this.dialogIndex=this.purchases.data.indexOf(item)
     restockForm.id=item.columns.id;
-    restockForm.product_id=item.columns.product.id;
-    restockForm.product_id=item.columns.product.id;
+    restockForm.product_id=item.columns.product?.id || '';
     restockForm.original_price=item.columns.original_price;
     restockForm.sale_price=item.columns.sale_price;
     restockForm.quantity=item.columns.quantity;
@@ -137,9 +137,12 @@ export default {
          this.restockForm.post(route('purchases.store'), {
         onSuccess: () => {
           this.restockForm.reset()
+          this.text = 'Successfully saved!'
         },
         onError: () => {
           this.dialog=true
+          this.text = 'Something went wrong!'
+          this.snackbar = true
         }
       });
     },
@@ -190,20 +193,26 @@ export default {
     rounded="0"
     class="p-2"
   >
-    <v-img cover :src="'http://127.0.0.1:8000/'+item.columns.product.image"></v-img>
+  <v-img cover v-if="item.columns.product" :src="'http://127.0.0.1:8000/' + item.columns.product.image" ></v-img>
+  <v-img cover v-else :src="baseurl+'/images/DefaultImage.png'"></v-img>
   </v-avatar> 
      <!-- <img :src="'http://127.0.0.1:8000/'+item.file" alt=""> -->
       </template>
 
-      <template v-slot:[`item.product`]`="{ item }" >
- {{ item.columns.product.product_name}}
-        </template>
+      
+      <template v-slot:[`item.product`]="{ item }">
+  {{ item.columns.product?.product_name || 'None' }}
+</template>
 
-        <template v-slot:[`item.original_price`]`="{ item }" >
+
+
+
+
+        <template v-slot:[`item.original_price`]="{ item }" >
           ₱ {{ item.columns.original_price}}
         </template>
 
-        <template v-slot:[`item.sale_price`]`="{ item }" >
+        <template v-slot:[`item.sale_price`]="{ item }" >
           ₱ {{ item.columns.sale_price}}
         </template>
 
