@@ -1,6 +1,5 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-
 import { router } from '@inertiajs/vue3'
 import { useForm, Head } from '@inertiajs/vue3';
 defineProps(['categories']);
@@ -13,6 +12,16 @@ const selectedCategory = useForm ({
 <script>
 
   export default {
+    // props: ['categories'], <-- You can also use this props instead of the top defineProps
+    // Use Created for consoling when refreshed or reloaded
+    created() {
+    // props are exposed on `this`.
+    console.log(this.categories);
+
+  
+  },
+
+
     data: () => ({
     
   
@@ -39,25 +48,21 @@ const selectedCategory = useForm ({
     <AuthenticatedLayout>
      <div class="m-2">
       <v-row>
-                  <v-col cols="12" sm="2" md="2"
-                  >
-                  <v-card
-    class="mx-auto "
-    
-    max-width="300"
-  >
+        <v-col cols="12" sm="2" md="2">
+        <v-card  class="mx-auto " max-width="300">
   <v-card-text class="bg-red-darken-4"> CATEGORIES</v-card-text>
-
-  
-    <v-list
-      v-model="selectedCategory.categoryId"
-      height="500" class="overflow-auto "
-      :items="categories"
-      item-title="title"
-      item-value="id"
-      @click="selectCategory()"
-    ></v-list>
-
+  <v-list v-model="selectedCategory.categoryId" height="500" class="overflow-auto">  <!-- V-list container -->
+    <!-- V-list-item and for loop all of the category id.-->
+    <!-- :value="category.id" is for getting the ID instead of the title. -->
+    <v-list-item 
+      v-for="(category) in categories"
+      :key="category.id"
+      :value="category.id"
+      @click="selectCategory(category.id)"
+    >
+      {{ category.title }}  <!-- Show the title instead of the ID-->
+    </v-list-item>
+  </v-list>
   </v-card>
                     
                   </v-col>
