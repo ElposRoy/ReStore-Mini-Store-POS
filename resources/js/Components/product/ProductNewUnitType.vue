@@ -4,7 +4,7 @@ import { useForm } from '@inertiajs/vue3';
 
 defineEmits(['closeDialog','categoryUnitTypeSubmitForm'])
 
-defineProps(['categories','dialogUnitType']);
+defineProps(['categories','dialogUnitType','unit_types']);
 
 let unit_type_form = useForm({
     unit_type: "",
@@ -40,6 +40,23 @@ let unit_type_form = useForm({
             <InputError :message="unit_type_form.errors.unit_type" />
           </v-col>
         </v-row>
+      <v-label>EXISTING CATEGORIES</v-label>
+          <v-col
+            cols="12"
+            sm="6"
+            md="12"
+            class="mx-auto"
+          >
+          <v-chip 
+          class="ma-1"
+          v-for="(type,i) in unit_types"
+          :unit_types="unit_types"
+          >
+          
+            {{ type.unit_type}} 
+              </v-chip>
+          </v-col>
+        
       </v-container>
       </form>
     </v-card-text>

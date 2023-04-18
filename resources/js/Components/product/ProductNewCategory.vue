@@ -40,6 +40,23 @@ let categoryForm = useForm({
             <InputError :message="categoryForm.errors.title" />
           </v-col>
         </v-row>
+        <v-label>EXISTING CATEGORIES</v-label>
+          <v-col
+            cols="12"
+            sm="6"
+            md="12"
+            class="mx-auto"
+          >
+          <v-chip 
+          class="ma-1"
+          v-for="(category,i) in categories"
+          :categories="categories"
+          >
+          
+            {{ category.title}} 
+              </v-chip>
+          </v-col>
+
       </v-container>
       </form>
     </v-card-text>

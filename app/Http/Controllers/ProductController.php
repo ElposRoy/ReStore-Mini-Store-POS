@@ -22,6 +22,8 @@ class ProductController extends Controller
             'unit_types'=> UnitType::all(),
         ]);
 
+        
+
     }
 
     /**
@@ -98,7 +100,6 @@ class ProductController extends Controller
     {
         
   try{
-  
     if ($request->hasFile('image')) {
         $validateImage=$request->validate(['image'=>'image']);
         $image = $validateImage['image']; // get the uploaded file
@@ -154,6 +155,9 @@ class ProductController extends Controller
     {
         try {
             $product->delete();
+
+            unlink($product->image);
+        
             return redirect(route('products.index'));
         } catch (\Throwable $th) {
             throw $th;
