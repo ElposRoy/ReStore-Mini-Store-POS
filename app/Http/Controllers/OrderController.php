@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Orders/Index', [
+            'products'=> Product::all(),
             'categories'=> Category::all(),
             'unit_types'=> UnitType::all(),
         ]);
