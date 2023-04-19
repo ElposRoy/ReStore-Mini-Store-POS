@@ -114,6 +114,12 @@ class PurchaseController extends Controller
      */
     public function destroy(purchase $purchase)
     {
-        //
+        try {
+            $purchase->delete();
+            return redirect(route('purchases.index'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+      
     }
 }
