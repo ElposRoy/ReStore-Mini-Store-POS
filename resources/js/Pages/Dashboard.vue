@@ -184,3 +184,11 @@ export default{
         <!-- Main Content -->
     </AuthenticatedLayout>
 </template>
+
+
+
+
+<!-- cols="12" sm="4" md="4"   
+v-for="(product) in products"
+:key="product.id"
+:value="product.id" -->
