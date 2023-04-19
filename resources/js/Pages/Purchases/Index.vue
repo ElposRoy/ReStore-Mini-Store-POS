@@ -5,7 +5,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import { router } from '@inertiajs/vue3'
 import {useForm, Head } from '@inertiajs/vue3';
 import PurchaseAddEditDialog from '@/Components/purchases/PurchaseAddEditDialog.vue';
-
+import PurchaseDeleteDialog from '@/Components/purchases/PurchaseDeleteDialog.vue';
 defineProps(['purchases','products']);
 </script>
 
@@ -20,7 +20,6 @@ const restockForm = useForm ({
     quantity: '',
     purchasedDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
     expirationDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-
 })
 
 //Date Format Function
@@ -39,6 +38,7 @@ function formatDate(dateString) {
 
 
 export default {
+  
   data: () => ({
     baseurl: location.origin,
     isEdit: false,
@@ -46,6 +46,7 @@ export default {
     snackbar: false,
     dialogIndex: -1,
     dialogDelete: false,
+    deleteId: null,
     search: '',
     headers: [
     { title: 'ID', key: 'id', align: ' d-none' },
@@ -79,6 +80,7 @@ export default {
   },
 
   created () {
+    // console.log(this.purchases);
     this.initialize()
   },
 
@@ -104,14 +106,28 @@ export default {
     this.dialog=true;
     },
 
-    deleteItem (item) {
-      
+    deleteItem () {  //Open the Delete Dialog 
+      this.dialogDelete=true
     },
 
-    deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
+
+
+    async deleteItemConfirm() { //Confirmation Deletion of Purchase
+    
+  try {
+    await router.post(`/purchases/${this.deleteId}`, {
+      _method: 'delete'
+    });
+    this.text = 'Deleted a Stock!'
+    this.dialogDelete = false;
+    this.snackbar = true
+  } catch (error) {
+    this.dialogDelete = true;
+    this.text = 'Something went wrong!'
+    this.snackbar = true
+    // Handle error
+  }
+},
 
     close(){
   
@@ -124,7 +140,6 @@ export default {
    
     closeDelete () {
       this.dialogDelete = false
-  
     },
 
   
@@ -260,18 +275,17 @@ export default {
       >
     </PurchaseAddEditDialog>
 
+    <PurchaseDeleteDialog
+    :dialogDelete="dialogDelete"
+  
+    :deleteId="deleteId"
+    @deleteItemConfirm="deleteItemConfirm"
+    @closeDelete="dialogDelete=false"
+    >
 
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+    </PurchaseDeleteDialog>
+
+      
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item, index }">
@@ -284,7 +298,7 @@ export default {
       </v-icon>
       <v-icon
         size="small"
-        @click="deleteItem(item.raw)"
+        @click="deleteItem(deleteId=item.columns.id)"
       >
         mdi-delete
       </v-icon>

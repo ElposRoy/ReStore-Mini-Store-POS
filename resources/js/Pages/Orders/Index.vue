@@ -104,14 +104,16 @@ const selectedCategory = useForm ({
       <v-card-title class="text-white" v-text="product.product_name"></v-card-title>
     </v-img>
 
-    <v-card-actions>
+    <v-card-actions >
+      
+        <v-card-text >
+            ADD
+          </v-card-text>
+          
+      <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal">
+        ADD
+      </v-btn>
       <v-spacer></v-spacer>
-
-      <v-btn size="small" color="surface-variant" variant="text" icon="mdi-heart"></v-btn>
-
-      <v-btn size="small" color="surface-variant" variant="text" icon="mdi-bookmark"></v-btn>
-
-      <v-btn size="small" color="surface-variant" variant="text" icon="mdi-share-variant"></v-btn>
     </v-card-actions>
   </v-card>
 </v-col>

@@ -211,7 +211,7 @@ editSubmitForm() {
   <template v-slot:[`item.image`]`="{ item }">
   
     <v-avatar
-      size="80"
+      size="60"
       rounded="0"
       class="p-2"
     >
@@ -300,6 +300,15 @@ editSubmitForm() {
 
     <!-- ACTION BUTTON -->
     <template v-slot:item.actions="{ item }">
+      <!-- Restock Button -->
+      <v-icon
+        size="small"
+        class="me-2"
+        @click="; "
+      >
+      mdi-archive-arrow-down
+      </v-icon>
+      <!-- Edit Button -->
       <v-icon
         size="small"
         class="me-2"
@@ -307,6 +316,8 @@ editSubmitForm() {
       >
         mdi-pencil
       </v-icon>
+
+      <!-- Delete Button -->
       <v-icon
         size="small"
         @click="openDelete(deleteID=item.columns.id); "
