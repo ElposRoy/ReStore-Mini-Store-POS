@@ -88,7 +88,7 @@ const selectedCategory = useForm ({
       <v-row dense>
         <v-col
   v-for="product in products"
-  :key="product.title"
+  :key="product.product_name"
   :value="product.id"
   cols="4"
 >
