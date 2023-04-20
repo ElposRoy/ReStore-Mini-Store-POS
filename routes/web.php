@@ -40,6 +40,11 @@ Route::resource('products', ProductController::class) //Product ROUTE
     ->only(['index','create', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
+Route::resource('products.purchases', PurchaseController::class) //Purchase ROUTE in the product page
+    ->only(['store'])
+    ->middleware(['auth', 'verified']);
+
+
 
 Route::resource('purchases', PurchaseController::class) //Purchase Link
 ->only(['index', 'store', 'update','destroy'])
@@ -49,9 +54,6 @@ Route::resource('purchases', PurchaseController::class) //Purchase Link
 Route::resource('orders', OrderController::class) //Order Link
 ->only(['index', 'store', 'update','destroy'])
 ->middleware(['auth', 'verified']);
-
-
-
 
 
 Route::resource('chirps', ChirpController::class) //Chirp Controller
