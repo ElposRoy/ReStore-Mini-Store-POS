@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
 import ProductEditDialog from '@/Components/product/ProductEditDialog.vue';
 import ProductDeleteDialog from '@/Components/product/ProductDeleteDialog.vue';
+import ProductRestockDialog from '@/Components/product/ProductRestockDialog.vue';
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { router } from '@inertiajs/vue3'
 import { useForm, Head } from '@inertiajs/vue3';
@@ -22,10 +23,20 @@ let editForm = useForm({
     category_id: '',
 });
 
+const restockForm = useForm ({
+    id:null,
+    product_id: '',
+    original_price: '',
+    sale_price: '',
+    quantity: '',
+    purchasedDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    expirationDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+})
+
 export default {
   
     data: () => ({
-  
+      dialogRestock: false,
       dialog: false,
       snackbar: false,
       dialogDelete: false,
@@ -62,11 +73,14 @@ export default {
     dialogEdit (val) {
       val || this.close()
     },
-
+    dialogRestock (val) {
+        val || this.close()
+      },
   
   },
 
   created () {
+    
     this.initialize()
   },
 
@@ -135,6 +149,13 @@ export default {
       this.dialogDelete = true;
       
     },
+    openRestock(item){
+      
+      restockForm.product_name=item.columns.product_name
+      restockForm.product_id=item.columns.id
+      this.dialogRestock = true;
+    },
+
 
     close () {
         this.dialogEdit = false
@@ -143,52 +164,58 @@ export default {
     closeDelete () {
         this.dialogDelete = false
       },
+    closeRestock(){
+      this.dialogRestock = false
+      this.restockForm.reset();
+      console.log('asd')
+    },
 
 
       async deleteItemConfirm() {
-  try {
-    await router.post(`/products/${this.deleteID}`, {
-      _method: 'delete'
-    });
-    this.dialogDelete = false;
-  } catch (error) {
-    // Handle error
-  }
-},
+        try {
+          await router.post(`/products/${this.deleteID}`, {
+            _method: 'delete'
+          });
+          this.dialogDelete = false;
+        } catch (error) {
+          // Handle error
+        }
+        },
 
-editSubmitForm() {
-  router.post(`/products/${this.editForm.id}`, {
-    _method: 'put',
-    ...this.editForm
-  }, {
-    onSuccess: () => {
-      this.close();
-      this.text = 'Successfully updated the product!'
-      this.snackbar = true
-    },
-    onError: () => {
-      this.text = 'Something went wrong!'
-      this.snackbar = true
-    } 
-  });
+      editSubmitForm() {
+        router.post(`/products/${this.editForm.id}`, {
+          _method: 'put',
+          ...this.editForm
+        }, {
+          onSuccess: () => {
+            this.close();
+            this.text = 'Successfully updated the product!'
+            this.snackbar = true
+          },
+          onError: () => {
+            this.text = 'Something went wrong!'
+            this.snackbar = true
+          } 
+        });
+                    // id: this.editForm.id,
+                    // image: this.editForm.image,
+                    // product_name: this.editForm.product_name,
+                    // price:this.editForm.price,
+                    // quantity: this.editForm.quantity,
+                    // category_id: this.editForm.category_id,
 
-  
-              // id: this.editForm.id,
-              // image: this.editForm.image,
-              // product_name: this.editForm.product_name,
-              // price:this.editForm.price,
-              // quantity: this.editForm.quantity,
-              // category_id: this.editForm.category_id,
+              //  this.editForm.put(route('products.update',this.editForm.id), { 
+              //   onSuccess: () => {
+              //     this.editForm.reset();
+              //   this.close();
+              //     } 
+              //   });
 
+        },
 
-        //  this.editForm.put(route('products.update',this.editForm.id), { 
-        //   onSuccess: () => {
-        //     this.editForm.reset();
-        //   this.close();
-        //     } 
-        //   });
-
-  },
+      saveRestock(){
+        console.log(restockForm.product_id)
+      },
 
   },
   }
@@ -294,6 +321,15 @@ editSubmitForm() {
             >
             </ProductDeleteDialog>
 
+            <ProductRestockDialog
+            :products="products"
+            :dialogRestock="dialogRestock"
+            :restockForm="restockForm"
+            @closeRestock="closeRestock"
+            @saveRestock="saveRestock">
+    
+     </ProductRestockDialog>
+
         </v-toolbar>
       </template>
   <!-- TOP TABLE -->
@@ -304,7 +340,7 @@ editSubmitForm() {
       <v-icon
         size="small"
         class="me-2"
-        @click="; "
+        @click=" openRestock(item)"
       >
       mdi-archive-arrow-down
       </v-icon>

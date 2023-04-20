@@ -22,8 +22,6 @@ class ProductController extends Controller
             'unit_types'=> UnitType::all(),
         ]);
 
-        
-
     }
 
     /**

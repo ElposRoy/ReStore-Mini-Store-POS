@@ -19,13 +19,16 @@ let form = useForm({
 });
 
 
+
 export default {
     data: () => ({
     
       text: ``,
+      
       dialog: false,
       dialogCategory: false,
       dialogUnitType: false,
+      url:'',
     }),
 
     computed: {
@@ -42,6 +45,7 @@ export default {
       dialogUnitType (val) {
         val || this.close()
       },
+      
     },
 
     created () {
@@ -49,11 +53,12 @@ export default {
     },
 
     methods: {
+    
       initialize () {
     
       },
 
-  
+    
       close () {
         this.dialog = false
         this.dialogCategory = false
@@ -75,7 +80,7 @@ export default {
     this.text='Something went wrong!'
     this.snackbar=true
         } 
-});
+    });
     },
     openCategory() {
       this.dialogCategory=true
@@ -105,6 +110,14 @@ export default {
     } 
   });
       },
+
+      
+      Preview_image() {
+        this.url= URL.createObjectURL(this.form.image)
+      
+    },
+
+
     },
   }
 </script>
@@ -171,7 +184,7 @@ export default {
                     md="3"
                   >
                   <v-avatar color="grey" size="80">
-                    <span class="text-h5">IMG</span>
+                    <v-img :src="url"></v-img>
                   </v-avatar>
                   </v-col> 
 
@@ -191,6 +204,7 @@ export default {
                     <label for="file" class="block font-medium text-gray-700 mb-3">Add Image</label>
                     <input
                         @input="form.image=$event.target.files[0]"
+                        @change="Preview_image()"
                         type="file"
                         name="image"
                         id="image"
@@ -316,8 +330,7 @@ export default {
      @categoryUnitTypeSubmitForm="categoryUnitTypeSubmitForm">
      >
      </ProductNewUnitType>
-    
 
 
-
+     
  </template>
