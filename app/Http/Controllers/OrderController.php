@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Inertia\Response;
+
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\UnitType;
@@ -17,7 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Orders/Index', [
-            'products'=> Product::all(),
+            'products'=> Product::with(['purchases'])->paginate(),
             'categories'=> Category::all(),
             'unit_types'=> UnitType::all(),
         ]);

@@ -16,18 +16,14 @@ const selectedCategory = useForm ({
     // Use Created for consoling when refreshed or reloaded
     created() {
     // props are exposed on `this`.
-    // console.log(this.products.id);
+    // console.log(this.products.data);
 
   
   },
 
 
     data: () => ({
-      cards: [
-        { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg'},
-        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg'},
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg'},
-    ],
+    
     }),
     
   computed: {
@@ -50,73 +46,74 @@ const selectedCategory = useForm ({
   
     <AuthenticatedLayout>
      <div class="m-2">
-      <v-row>
-        <v-col cols="12" sm="2" md="2">
-        <v-card  class="mx-auto " max-width="300">
-  <v-card-text class="bg-red-darken-4" > CATEGORIES</v-card-text>
-  <v-list v-model="selectedCategory.categoryId" height="500" class="overflow-auto">  <!-- V-list container -->
-    <!-- V-list-item and for loop all of the category id.-->
-    <!-- :value="category.id" is for getting the ID instead of the title. -->
+      <v-row >
+       
+
+        <v-col cols="12" sm="8" md="8" >
+          <v-card class="mx-auto">
+            <!-- Fix the categories. It should be a box bg color light blue and has horizontal scrollbar  -->
+            <v-col cols="12" sm="12" md="12">
+              CATEGORIES
+              <v-list v-model="selectedCategory.categoryId">
+  <!-- V-list container -->
+  <!-- V-list-item and for loop all of the category id.-->
+  <!-- :value="category.id" is for getting the ID instead of the title. -->
+  <v-row>
     <v-list-item 
       v-for="(category) in categories"
       :key="category.id"
       :value="category.id"
       @click="selectCategory(category.id)"
     >
-      {{ category.title }}  <!-- Show the title instead of the ID-->
+      {{ category.title }} <!-- Show the title instead of the ID-->
     </v-list-item>
-  </v-list>
-  </v-card>
-                    
-                  </v-col>
+  </v-row>
+</v-list>
 
-                  <v-col cols="12" sm="7" md="7"
-                  >
-               <v-card class="mx-auto" color="orange-lighten-4" prepend-icon="mdi-archive">
-                  <template  v-slot:title>
-                    <div>PRODUCTS</div>
-                  </template>
-
-                  <v-divider :thickness="8" class="border-opacity-100"></v-divider>
-
-                  <v-card
-    class="mx-auto"
-    
-  >
+            </v-col>
+          <v-divider :thickness="8" class="border-opacity-100"></v-divider>
+ 
+            <v-card
+            class="mx-auto"
+            >
   
-    <v-container fluid>
-      <v-row dense>
-        <v-col
-  v-for="product in products"
-  :key="product.product_name"
-  :value="product.id"
-  cols="4"
->
-  <v-card>
-    <v-img 
-      :src="'http://127.0.0.1:8000/'+product.image"
-      class="align-end"
-      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-     
-      height="200px"
-      cover
-    >
-      <v-card-title class="text-white" v-text="product.product_name"></v-card-title>
-    </v-img>
+            <v-container fluid>
+              <v-row dense>
+                 <!-- Change the product to purchase Props that comes with the price-->
+                <v-col
+          v-for="product in products.data" 
+          :key="product.product_name"
+          :value="product.id"
+          cols="4"
+        >
+          <v-card>
+            <v-img 
+              :src="'http://127.0.0.1:8000/'+product.image"
+              class="align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+              cover
+            >
+              <v-card-title class="text-white" v-text="product.product_name"></v-card-title>
+            </v-img>
 
-    <v-card-actions >
-      
-        <v-card-text >
-            ADD
-          </v-card-text>
-          
-      <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal">
-        ADD
-      </v-btn>
-      <v-spacer></v-spacer>
-    </v-card-actions>
-  </v-card>
-</v-col>
+            <v-card-actions v-for="purchase in product.purchases" :key="purchase.id" >
+              
+                <v-card-text >
+                    {{ product.unit}} Unit
+                  </v-card-text>
+
+                  <v-card-text >
+                    ₱ {{ purchase.sale_price }}
+                  </v-card-text>
+                  
+              <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal" color="success">
+                ADD
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-col>
 
       </v-row>
     </v-container>
@@ -128,7 +125,7 @@ const selectedCategory = useForm ({
                    
                   </v-col>
 
-                  <v-col cols="12" sm="3" md="3" >
+                  <v-col cols="12" sm="4" md="4" >
                  <v-card
                     class="mx-auto"
                     color="green-lighten-5"
