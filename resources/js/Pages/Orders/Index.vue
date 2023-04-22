@@ -51,24 +51,26 @@ const selectedCategory = useForm ({
 
         <v-col cols="12" sm="8" md="8" >
           <v-card class="mx-auto">
-            <!-- Fix the categories. It should be a box bg color light blue and has horizontal scrollbar  -->
+            <!-- Fix the categories. It should be a box bg color light blue and has horizontal scrollbar  --> 
+
+            <!--  New Solution, Use v-slide-group-->
             <v-col cols="12" sm="12" md="12">
               CATEGORIES
               <v-list v-model="selectedCategory.categoryId">
   <!-- V-list container -->
   <!-- V-list-item and for loop all of the category id.-->
   <!-- :value="category.id" is for getting the ID instead of the title. -->
-  <v-row>
-    <v-list-item 
-      v-for="(category) in categories"
-      :key="category.id"
-      :value="category.id"
-      @click="selectCategory(category.id)"
-    >
-      {{ category.title }} <!-- Show the title instead of the ID-->
-    </v-list-item>
-  </v-row>
-</v-list>
+    <v-row>
+      <v-list-item 
+        v-for="(category) in categories"
+        :key="category.id"
+        :value="category.id"
+        @click="selectCategory(category.id)"
+      >
+        {{ category.title }} <!-- Show the title instead of the ID-->
+      </v-list-item>
+    </v-row>
+  </v-list>
 
             </v-col>
           <v-divider :thickness="8" class="border-opacity-100"></v-divider>
