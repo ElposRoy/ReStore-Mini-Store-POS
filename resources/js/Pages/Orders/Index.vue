@@ -16,14 +16,14 @@ const selectedCategory = useForm ({
     // Use Created for consoling when refreshed or reloaded
     created() {
     // props are exposed on `this`.
-    // console.log(this.products.data);
+    //console.log(this.products.data);
 
   
   },
 
 
     data: () => ({
-    
+      isSelected: false,
     }),
     
   computed: {
@@ -35,7 +35,9 @@ const selectedCategory = useForm ({
 
   methods: {
     selectCategory(item){
-      console.log(item)
+   
+      this.selectedCategory.categoryId = item
+      // console.log(this.selectedCategory.categoryId)
     }
   },
   }
@@ -51,26 +53,38 @@ const selectedCategory = useForm ({
 
         <v-col cols="12" sm="8" md="8" >
           <v-card class="mx-auto">
-            <!-- Fix the categories. It should be a box bg color light blue and has horizontal scrollbar  --> 
-
+      
             <!--  New Solution, Use v-slide-group-->
             <v-col cols="12" sm="12" md="12">
               CATEGORIES
               <v-list v-model="selectedCategory.categoryId">
-  <!-- V-list container -->
-  <!-- V-list-item and for loop all of the category id.-->
-  <!-- :value="category.id" is for getting the ID instead of the title. -->
-    <v-row>
-      <v-list-item 
-        v-for="(category) in categories"
-        :key="category.id"
-        :value="category.id"
-        @click="selectCategory(category.id)"
-      >
-        {{ category.title }} <!-- Show the title instead of the ID-->
-      </v-list-item>
-    </v-row>
   </v-list>
+  <v-sheet
+    class="mx-auto"
+  >
+    <v-slide-group
+      show-arrows
+      @category-selected="selectedCategory.categoryId = $event"
+    >
+    <v-slide-group-item
+  v-for="(category) in categories"
+  :key="category.id"
+
+>
+  <v-btn
+    class="ma-2"
+    rounded
+    :color="selectedCategory.categoryId === category.id ? 'success' : undefined"
+    @click="selectCategory(category.id)"
+  >
+    {{ category.title }}
+  </v-btn>
+</v-slide-group-item>
+
+    </v-slide-group>
+  </v-sheet>
+  
+  
 
             </v-col>
           <v-divider :thickness="8" class="border-opacity-100"></v-divider>
