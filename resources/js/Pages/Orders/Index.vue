@@ -45,9 +45,8 @@ const selectedCategory = useForm ({
       // console.log(this.selectedCategory.categoryId)
     },
     addToCart(item) {
-    
       this.cartData.push(item);
-      console.log(this.cartData)
+      console.log(item)
     },
     removeCartItem(){
     
@@ -108,7 +107,7 @@ const selectedCategory = useForm ({
   
             <v-container fluid>
               <v-row dense>
-                 <!-- Change the product to purchase Props that comes with the price-->
+                
                 <v-col
           v-for="product in products.data" 
           :key="product.product_name"
@@ -197,7 +196,7 @@ const selectedCategory = useForm ({
         <v-sheet class="pa-2 ma-2 mb-0 pb-0 d-flex justify-space-between">
       <div>
         <!-- Fix the item.unit, it must be the purchase price -->
-        <p> {{ item.product_name }} <br>{{ item.unit }}</p> 
+        <p> {{ item.product_name }} <br> ₱ {{ item.purchases[0].sale_price  }}</p> 
       </div>
 
       <div>
