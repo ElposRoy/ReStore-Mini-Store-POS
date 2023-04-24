@@ -34,27 +34,12 @@ defineProps(['dialog','restockForm','purchases','products','title','isEdit']);
             <v-card-text>
               <v-container>
                 <v-row>
-                    <v-col
-                    cols="12"
-                    sm="8"
-                    md="8"
-                  >
-
-                  <v-select
-                    v-model="restockForm.product_id"
-                    :items="products"
-                    item-title="product_name"
-                    item-value="id"
-                    label="Product"
-                    density="comfortable"
-                  ></v-select>
-                  <InputError :message="restockForm.errors.product_id"/>
-                  </v-col> 
+                 
 
                   <v-col
                     cols="12"
-                    sm="4"
-                    md="4"
+                    sm="3"
+                    md="3"
                   >
                     <v-text-field
                       type="number"
@@ -72,6 +57,7 @@ defineProps(['dialog','restockForm','purchases','products','title','isEdit']);
                     md="5"
                   >
                     <v-text-field
+                    type="number"
                       v-model="restockForm.original_price"
                       label="Original Price"
                     ></v-text-field>
@@ -85,6 +71,7 @@ defineProps(['dialog','restockForm','purchases','products','title','isEdit']);
                  
                   >
                     <v-text-field
+                    type="number"
                       v-model="restockForm.sale_price"
                       label="Sale Price"
                     ></v-text-field>
