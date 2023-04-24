@@ -35,6 +35,24 @@ defineProps(['dialog','restockForm','purchases','products','title','isEdit']);
               <v-container>
                 <v-row>
                  
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    md="8"
+                  >
+
+                  <v-select
+                    v-model="restockForm.product_id"
+                    :items="products"
+                    item-title="product_name"
+                    item-value="id"
+                    label="Product"
+                    density="comfortable"
+                  ></v-select>
+                  <InputError :message="restockForm.errors.product_id"/>
+                  </v-col> 
+
+
 
                   <v-col
                     cols="12"
