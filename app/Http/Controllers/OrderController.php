@@ -18,9 +18,12 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Orders/Index', [
-            'products'=> Product::with(['purchases'])->paginate(),
+            'products' => Product::with(['purchases' => function ($query) {
+            $query->where('quantity', '>', 0);
+            }])->paginate(),
+            
             'categories'=> Category::all(),
-            'unit_types'=> UnitType::all(),
+          
         ]);
 
 
