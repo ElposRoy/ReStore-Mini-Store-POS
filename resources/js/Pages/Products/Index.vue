@@ -167,7 +167,7 @@ export default {
     closeRestock(){
       this.dialogRestock = false
       this.restockForm.reset();
-      console.log('asd')
+      
     },
 
 
@@ -214,7 +214,25 @@ export default {
         },
 
       saveRestock(){
-        console.log(restockForm.product_id)
+      
+
+        router.post(`/products/${this.restockForm.product_id}/purchases`, {
+          _method: 'post',
+          ...this.restockForm
+        }, {
+          onSuccess: () => {
+            this.close();
+            this.restockForm.reset();
+            this.text = 'Successfully restocked product!'
+            this.snackbar = true
+          },
+          onError: () => {
+            this.text = 'Something went wrong!'
+            this.snackbar = true
+          } 
+        });
+     
+    
       },
 
   },

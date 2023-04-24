@@ -16,7 +16,7 @@ const selectedCategory = useForm ({
     // Use Created for consoling when refreshed or reloaded
     created() {
     // props are exposed on `this`.
-    //console.log(this.products.data);
+    // console.log(this.products.data);
 
   
   },
@@ -24,10 +24,15 @@ const selectedCategory = useForm ({
 
     data: () => ({
       isSelected: false,
+     
+      cartData: [],
+     
     }),
     
   computed: {
-
+    // totalCost() {
+    //   return this.cartData.reduce((acc, item) => acc + item.price, 0);
+    // },
   },
   watch: {
     
@@ -38,7 +43,15 @@ const selectedCategory = useForm ({
    
       this.selectedCategory.categoryId = item
       // console.log(this.selectedCategory.categoryId)
-    }
+    },
+    addToCart(item) {
+    
+      this.cartData.push(item);
+      console.log(this.cartData)
+    },
+    removeCartItem(){
+    
+    },
   },
   }
 </script>
@@ -123,10 +136,10 @@ const selectedCategory = useForm ({
                     ₱ {{ purchase.sale_price }}
                   </v-card-text>
                   
-              <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal" color="success">
+              <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="addToCart(product)">
                 ADD
               </v-btn>
-              <v-spacer></v-spacer>
+             
             </v-card-actions>
           </v-card>
         </v-col>
@@ -143,17 +156,94 @@ const selectedCategory = useForm ({
 
                   <v-col cols="12" sm="4" md="4" >
                  <v-card
-                    class="mx-auto"
-                    color="green-lighten-5"
+                    class="mx-auto "
+                    
                     prepend-icon="mdi-basket"
+                   
                   >
                     <template v-slot:title>
                       CART AREA
                     </template>
                     <v-divider :thickness="8" class="border-opacity-100"></v-divider>
+                   
+                    <v-card
+                    class="overflow-y-auto"
+                    height="600"
+                    >
+                      <v-card 
+                    class="m-2"
+                    variant="outlined"
+                    v-for="(item, index) in cartData"
+                    :key="index"
+                    >
+                    <v-row no-gutters>
+      <v-col
+      col="12"
+      md="2"
+      sm="2"
+      >
+        <v-sheet class="pa-2 ma-2">
+          <v-avatar
+                class=""
+                size="50"
+                rounded="0"
+              >
+                <v-img  :src="'http://127.0.0.1:8000/'+item.image"></v-img>
+              </v-avatar>
+        </v-sheet>
+      </v-col>
+      <v-col>
+       
+        <v-sheet class="pa-2 ma-2 mb-0 pb-0 d-flex justify-space-between">
+      <div>
+        <!-- Fix the item.unit, it must be the purchase price -->
+        <p> {{ item.product_name }} <br>{{ item.unit }}</p> 
+      </div>
+
+      <div>
+            <v-text-field class="input-background-color" >
+    <template v-slot:append>
+      <v-icon color="green">
+        mdi-plus-box-outline
+      </v-icon>
+    </template>
+    <template v-slot:prepend>
+      <v-icon color="red">
+        mdi-minus
+      </v-icon>
+    </template>
+  </v-text-field>
+           </div>
+           
+      <div class="">
+        <p>₱ 123 <br>Pcs: 1</p>
+      </div>
+      
+        </v-sheet>
+        
+      </v-col>
+            <v-icon
+            size="small"
+            color="red-lighten-1"
+            class="ma-1 "
+            @click="removeCartItem(); "
+          >
+            mdi-delete
+          </v-icon> 
+    </v-row>
                     
+
+                    </v-card>
                     
+                   
                     
+                    </v-card>
+                  </v-card>
+                  <v-divider :thickness="6" class="border-opacity-100"></v-divider>
+
+                  <v-card
+                  class="pa-2">
+                  Total
                   </v-card>
                     
                   </v-col>
@@ -165,3 +255,10 @@ const selectedCategory = useForm ({
     
     
 </template>
+<style>
+  .input-background-color input {
+    border-radius: 10%;
+    background-color: rgb(221, 221, 221);
+    color: rgb(0, 0, 0);
+  }
+</style>
