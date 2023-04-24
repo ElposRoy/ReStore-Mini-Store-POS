@@ -33,7 +33,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
-      
+   
         try {
           
         $validated= $request -> validate([
@@ -44,7 +44,7 @@ class PurchaseController extends Controller
             'purchasedDate' => 'required|date_format:Y-m-d',
             'expirationDate' => 'nullable|date_format:Y-m-d',
         ]);
-    
+      
        Purchase::create([
             'product_id' => $validated['product_id'],
             'original_price' => $validated['original_price'],
