@@ -15,6 +15,7 @@ defineProps(['products','categories','unit_types']);
 let editForm = useForm({
    
     image: null,
+   currentImage: null,
     id: null,
     product_name: '',
     stock_level: '',
@@ -130,6 +131,7 @@ export default {
 
       editForm.id=item.columns.id;
       editForm.image=item.columns.image;
+      editForm.currentImage=item.columns.image;
       editForm.product_name=item.columns.product_name;
       editForm.unit=item.columns.unit;
       editForm.stock_level=item.columns.stock_level;
@@ -260,7 +262,8 @@ export default {
       rounded="0"
       class="p-2"
     >
-      <v-img cover :src="'http://127.0.0.1:8000/'+item.columns.image"></v-img>
+    <!-- Create :src = if else for image or null image default -->
+      <v-img cover :src="'http://127.0.0.1:8000/'+item.columns.image"></v-img> 
     </v-avatar> 
 
         </template>
