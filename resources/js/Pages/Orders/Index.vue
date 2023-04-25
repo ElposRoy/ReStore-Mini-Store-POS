@@ -18,7 +18,7 @@ const selectedCategory = useForm ({
     // Use Created for consoling when refreshed or reloaded
     created() {
     // props are exposed on `this`.
-    // console.log(this.products.data);
+    console.log(this.products.data);
 
   
   },
@@ -59,6 +59,10 @@ const selectedCategory = useForm ({
     AddQuantity(){
       console.log('Added')
     },
+    clearCart(){
+      this.cartData=[]
+      
+    }
   },
   }
 </script>
@@ -85,6 +89,7 @@ const selectedCategory = useForm ({
                   <!-- Cart Area -->
                   <CartArea
                   :cartData="cartData"
+                  @clearCart="clearCart"
                   @MinusQuantity="MinusQuantity"
                   @AddQuantity="AddQuantity"
                   ></CartArea>
