@@ -13,25 +13,39 @@ export default {
       isNoImage: false,
       baseurl: location.origin,
       oldImage: '' ,
+      url: null,
       
     };
   },
   watch: {
     
     isNoImage(newValue) {
-      const currentImage = this.editForm.image;
-      
+      const currentImage = this.editForm.currentImage;
       if (newValue) {
-         //checked checkbox to show upload image
+         //checked checkbox to hide the upload file input
+         
         this.oldImage = currentImage;
         this.editForm.image = '';
+      
         
       } else {
-       //unchecked checkbox to hide the upload image
-        this.editForm.image = this.oldImage || currentImage ;
-        this.oldImage = '';
+       //unchecked checkbox to show the upload file input
+    
+        this.editForm.image = this.oldImage || this.currentImage ;
         
+        this.oldImage = '';
+        this.url=null;
+        
+      
       }
+    }
+  },
+  methods: {
+    onFileChange(e) {
+      
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
+      
     }
   }
 }
@@ -77,7 +91,7 @@ export default {
                         rounded="0"
                         class="p-1"
                       >
-                        <v-img cover :src="'http://127.0.0.1:8000/'+editForm.image"></v-img>
+                        <v-img cover :src="url ? url : 'http://127.0.0.1:8000/'+editForm.image"></v-img>
                       </v-avatar> 
 
                   </v-col>
@@ -99,6 +113,7 @@ export default {
                   <div class="mb-4" v-if="!isNoImage">
                     <label for="file" class="block font-medium text-gray-700 mb-3">Change Image</label>
                     <input
+                      @change="onFileChange"
                         @input="editForm.image=$event.target.files[0]"
                         type="file"
                         name="image"
