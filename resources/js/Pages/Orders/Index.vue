@@ -89,7 +89,7 @@ const selectedCategory = useForm ({
         <CategoriesAndProduct
         @selectCategory="selectCategory"
         @addToCart="addToCart"
-       
+        :cartData="cartData"
         :products="products"
         :categories="categories"
         :selectedCategory ="selectedCategory "

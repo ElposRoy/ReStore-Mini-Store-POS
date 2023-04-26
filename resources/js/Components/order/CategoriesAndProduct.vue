@@ -2,7 +2,7 @@
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
-defineProps(['categories','products','selectedCategory']);
+defineProps(['categories','products','selectedCategory','cartData']);
 defineEmits(['selectCategory','addToCart']);
 
 </script>
@@ -13,6 +13,25 @@ defineEmits(['selectCategory','addToCart']);
       baseurl: location.origin,
      
     }),
+    created(){
+
+    },
+
+    methods:{
+      checkAddedd(prodID){
+     
+        
+    // Find the index of the object with the matching id
+    const index = this.cartData.findIndex((item) => item.id === prodID);
+    // If the object exists, remove it from the array
+    if (index !== -1) {
+      return true;
+    }
+    else{
+      return false;
+    }
+    },
+    }
   }
 </script>
 
@@ -91,20 +110,24 @@ rounded
             <v-card-text >
               ₱ {{ purchase.sale_price }}
             </v-card-text>    
-      <v-icon
+     
+     
+
+      <!-- Note: checkAddedd is a function at top, it checks for the product id in the cartData Array-->
+        <v-btn  v-if="!checkAddedd(product.id)" prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)">
+        Add
+        </v-btn>
+
+          <!-- Note: if the top v-if is true, execute the v-else and show the icon-->
+        <v-icon
+        v-else="checkAddedd(product.id)"
         class="ma-2"
         variant="text"
         icon="mdi-check-decagram"
         color="blue-lighten-2"
       ></v-icon>
-     
 
-      <!-- Note: check if product.id is in cartData, if so change the add button to check mark icon -->
-        <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)">
-        Add
-        </v-btn>
-
-        <!-- Note: When Clicked, remove the add button to checkmark -->
+       
       </v-card-actions>
 
       <v-card-actions 
