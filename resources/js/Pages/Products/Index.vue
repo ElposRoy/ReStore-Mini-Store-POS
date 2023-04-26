@@ -37,6 +37,7 @@ const restockForm = useForm ({
 export default {
   
     data: () => ({
+      baseurl : location.origin,
       dialogRestock: false,
       dialog: false,
       snackbar: false,
@@ -263,7 +264,7 @@ export default {
       class="p-2"
     >
     <!-- Create :src = if else for image or null image default -->
-      <v-img cover :src="'http://127.0.0.1:8000/'+item.columns.image"></v-img> 
+      <v-img cover :src="item.columns.image ? item.columns.image  :baseurl+'/images/DefaultImage.png'"></v-img> 
     </v-avatar> 
 
         </template>
