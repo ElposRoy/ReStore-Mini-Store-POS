@@ -7,6 +7,16 @@ defineEmits(['selectCategory','addToCart']);
 
 </script>
 
+<script>
+  export default {
+    data: () => ({
+      baseurl: location.origin,
+     
+    }),
+  }
+</script>
+
+
 
 <template>
 
@@ -57,11 +67,12 @@ rounded
     v-for="product in products.data" 
     :key="product.product_name"
     :value="product.id"
+    
     cols="12" md="4" sm="4"
   >
     <v-card>
       <v-img 
-        :src="'http://127.0.0.1:8000/'+product.image"
+        :src="product.image ? 'http://127.0.0.1:8000/'+product.image : baseurl+'/images/DefaultImage.png'"
         class="align-end"
    
         :gradient="product.purchases.length !== 0 ? 'to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)' : 'to bottom, rgba(2,0,36,0.5676471272102591), rgba(1161,30,30,0.3939776594231442)'"
@@ -86,9 +97,12 @@ rounded
         icon="mdi-check-decagram"
         color="blue-lighten-2"
       ></v-icon>
+     
         <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)">
-          ADD
+        Add
         </v-btn>
+
+        <!-- Note: When Clicked, remove the add button to checkmark -->
       </v-card-actions>
 
       <v-card-actions 
