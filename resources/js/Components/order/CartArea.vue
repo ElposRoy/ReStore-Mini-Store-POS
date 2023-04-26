@@ -3,9 +3,16 @@ import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
 defineProps(['cartData']);
-defineEmits(['MinusQuantity','AddQuantity','clearCart']);
+defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem']);
 </script>
 
+<script>
+  export default {
+    data: () => ({
+      baseurl: location.origin,
+    }),
+  }
+</script>
 
 <template>
 <v-col cols="12" sm="4" md="4" >
@@ -58,7 +65,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart']);
       size="50"
       rounded="0"
     >
-      <v-img  :src="'http://127.0.0.1:8000/'+item.image"></v-img>
+      <v-img  :src="item.image ? 'http://127.0.0.1:8000/'+item.image : baseurl+'/images/DefaultImage.png'"></v-img>
     </v-avatar>
     </v-sheet>
     </v-col>
@@ -96,7 +103,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart']);
     size="small"
     color="red-lighten-1"
     class="ma-1 "
-    @click="removeCartItem(); "
+    @click="$emit('removeCartItem',item.id)"
     >
     mdi-delete
     </v-icon> 
