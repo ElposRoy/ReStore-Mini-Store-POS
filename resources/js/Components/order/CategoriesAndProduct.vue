@@ -98,6 +98,8 @@ rounded
         color="blue-lighten-2"
       ></v-icon>
      
+
+      <!-- Note: check if product.id is in cartData, if so change the add button to check mark icon -->
         <v-btn prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)">
         Add
         </v-btn>
