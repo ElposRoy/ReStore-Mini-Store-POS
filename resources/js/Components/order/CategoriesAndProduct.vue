@@ -116,7 +116,8 @@ rounded
 
       <!-- Note: checkAddedd is a function at top, it checks for the product id in the cartData Array-->
       <!-- New problem, change the product.id to purchase because when one product has two choice and select one, both got add button changes -->
-        <v-btn  v-if="!checkAddedd(purchase.id)" prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)">
+      <!-- at @click emit change the product to purchase -->
+        <v-btn  v-if="!checkAddedd(purchase.id)" prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)"> 
         Add
         </v-btn>
 
