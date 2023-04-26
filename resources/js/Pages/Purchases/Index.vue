@@ -208,16 +208,17 @@ export default {
     rounded="0"
     class="p-2"
   >
-  <v-img cover v-if="item.columns.product" :src="'http://127.0.0.1:8000/' + item.columns.product.image" ></v-img>
-  <v-img cover v-else :src="baseurl+'/images/DefaultImage.png'"></v-img>
+  
+  <v-img cover :src="item.columns.product.image ? item.columns.product.image  :baseurl+'/images/DefaultImage.png'" ></v-img>
+  
   </v-avatar> 
      <!-- <img :src="'http://127.0.0.1:8000/'+item.file" alt=""> -->
       </template>
 
       
       <template v-slot:[`item.product`]="{ item }">
-  {{ item.columns.product?.product_name || 'None' }}
-</template>
+        {{ item.columns.product?.product_name || 'None' }}
+      </template>
 
 
 
