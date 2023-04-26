@@ -18,17 +18,20 @@ const selectedCategory = useForm ({
     // Use Created for consoling when refreshed or reloaded
     created() {
     // props are exposed on `this`.
-    console.log(this.products.data);
+    // console.log(this.products.data);
 
   
   },
 
 
     data: () => ({
+   
       isSelected: false,
-     
-      cartData: [],
-     
+      baseurl: location.origin,
+      cartData: [
+      
+
+      ],
     }),
     
   computed: {
@@ -48,9 +51,18 @@ const selectedCategory = useForm ({
     },
     addToCart(item) {
       this.cartData.push(item);
+      this.addedd=true;
+     
   
     },
-    removeCartItem(){
+
+    removeCartItem(itemID){
+    // Find the index of the object with the matching id
+    const index = this.cartData.findIndex((item) => item.id === itemID);
+    // If the object exists, remove it from the array
+    if (index !== -1) {
+      this.cartData.splice(index, 1);
+    }
     
     },
     MinusQuantity(){
@@ -77,6 +89,7 @@ const selectedCategory = useForm ({
         <CategoriesAndProduct
         @selectCategory="selectCategory"
         @addToCart="addToCart"
+       
         :products="products"
         :categories="categories"
         :selectedCategory ="selectedCategory "
@@ -92,6 +105,7 @@ const selectedCategory = useForm ({
                   @clearCart="clearCart"
                   @MinusQuantity="MinusQuantity"
                   @AddQuantity="AddQuantity"
+                  @removeCartItem="removeCartItem"
                   ></CartArea>
                   <!-- Cart Area -->
 
