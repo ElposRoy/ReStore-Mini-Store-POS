@@ -264,7 +264,7 @@ export default {
       class="p-2"
     >
     <!-- Create :src = if else for image or null image default -->
-      <v-img cover :src="item.columns.image ? item.columns.image  :baseurl+'/images/DefaultImage.png'"></v-img> 
+      <v-img cover :src="item.columns.image ? item.columns.image  : baseurl+'/images/DefaultImage.png'"></v-img> 
     </v-avatar> 
 
         </template>
