@@ -52,35 +52,49 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem']);
        variant="outlined"
        v-for="(item, index) in cartData"
        :key="index"
-       >
-       <v-row no-gutters>
-    <v-col
-    col="12"
-    md="2"
-    sm="2"
-    >
-    <v-sheet class="pa-2 ma-2">
+       >  
+      
+        <v-row no-gutters>
+      <v-col
+        cols="12"
+        md="2"
+        sm="2" 
+      >
+      <v-sheet class="pa-1 ma-1 d-flex justify-center align-center">
     <v-avatar
       class=""
-      size="50"
+      size="70"
       rounded="0"
     >
-      <v-img  :src="item.image ? 'http://127.0.0.1:8000/'+item.image : baseurl+'/images/DefaultImage.png'"></v-img>
+      <v-img  :src="item.ProductImage ? 'http://127.0.0.1:8000/'+item.ProductImage : baseurl+'/images/DefaultImage.png'"></v-img>
     </v-avatar>
-    </v-sheet>
-    </v-col>
-    <v-col>
+   </v-sheet>
+      </v-col>
 
-    <v-sheet class="pa-2 ma-2 mb-0 pb-0 d-flex justify-space-between">
+
+      <v-col
+        cols="12"
+        md="3"
+        sm="3"
+      >
+      <v-sheet class="pa-2 ma-2  d-flex justify-center align-center">
     <div>
     <!-- Fix the item.unit, it must be the purchase price -->
-    <p> {{ item.product_name }} <br> ₱ {{ item.purchases[0].sale_price  }}</p> 
+    <p> {{ item.ProductName }} <br> ₱ {{ item.SalePrice }}</p> 
     </div>
+    </v-sheet>
+      </v-col>
 
-    <div>
-    <v-text-field class="input-background-color" >
+      <v-col
+        cols="12"
+        md="4"
+        sm="4"
+      >
+      <v-sheet class="pa-1 ma-1 d-flex justify-center align-center">
+        <div style="width: 150px;">
+    <v-text-field class="input-background-color text-center" v-model="item.Quantity">
     <template v-slot:append>
-    <v-icon color="green" @click="$emit('AddQuantity')" >
+    <v-icon color="green" @click="$emit('AddQuantity',item.PurchaseID,item.Quantity)" >
     mdi-plus-box-outline
     </v-icon>
     </template>
@@ -91,29 +105,35 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem']);
     </template>
     </v-text-field>
     </div>
+   </v-sheet>
+      </v-col>
 
-    <div>
-    <p>₱ 123 <br>Unit: 6</p>
+
+      <v-col
+        cols="12"
+        md="3"
+        sm="3"
+      >
+      <v-sheet class="pa-2 ma-2 d-flex justify-center align-center">
+        <div>
+   
+    <p> ₱ {{ item.TotalPrice }}<br> Unit: {{ item.Unit }}</p>
     </div>
-
-    </v-sheet>
-
-    </v-col>
-    <v-icon
-    size="small"
-    color="red-lighten-1"
-    class="ma-1 "
-    @click="$emit('removeCartItem',item.id)"
-    >
-    mdi-delete
-    </v-icon> 
-    </v-row>
-       
-
-       </v-card>
-       
+   </v-sheet>
+      </v-col>
       
-       
+      <v-icon
+        size="small"
+        color="red-lighten-1"
+        class="ma-1"
+        style="position: absolute; top: 0; right: 0"
+        @click="$emit('removeCartItem', item.PurchaseID)"
+      >
+        mdi-delete
+      </v-icon> 
+
+    </v-row>
+       </v-card>
        </v-card>
      </v-card>
      <v-divider :thickness="6" class="border-opacity-100"></v-divider>
