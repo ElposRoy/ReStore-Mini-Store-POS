@@ -14,16 +14,14 @@ defineEmits(['selectCategory','addToCart']);
      
     }),
     created(){
-
+      // console.log(this.products.id)
     },
 
     methods:{
       checkAddedd(purchaseID){
-     
-        
     // Find the index of the object with the matching id
-    const index = this.cartData.findIndex((item) => item.purchases[0].id === purchaseID);
-   
+    const index = this.cartData.findIndex((item) => item.PurchaseID === purchaseID);
+       
     // If the object exists, remove it from the array
     if (index !== -1) {
       return true;
@@ -117,7 +115,7 @@ rounded
       <!-- Note: checkAddedd is a function at top, it checks for the product id in the cartData Array-->
       <!-- New problem, change the product.id to purchase because when one product has two choice and select one, both got add button changes -->
       <!-- at @click emit change the product to purchase -->
-        <v-btn  v-if="!checkAddedd(purchase.id)" prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', product)"> 
+        <v-btn  v-if="!checkAddedd(purchase.id)" prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', purchase, product)"> 
         Add
         </v-btn>
 
