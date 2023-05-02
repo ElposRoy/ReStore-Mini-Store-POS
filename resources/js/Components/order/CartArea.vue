@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
 defineProps(['cartData']);
-defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem']);
+defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric']);
 </script>
 
 <script>
@@ -92,14 +92,14 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem']);
       >
       <v-sheet class="pa-1 ma-1 d-flex justify-center align-center">
         <div style="width: 150px;">
-    <v-text-field class="input-background-color text-center" v-model="item.Quantity">
+    <v-text-field class="input-background-color align-text-center" @keypress="$emit('KeyisNumeric',$event,item.PurchaseID)" v-model="item.Quantity">
     <template v-slot:append>
-    <v-icon color="green" @click="$emit('AddQuantity',item.PurchaseID,item.Quantity)" >
+    <v-icon color="green" @click="$emit('AddQuantity',item.PurchaseID)" >
     mdi-plus-box-outline
     </v-icon>
     </template>
     <template v-slot:prepend>
-    <v-icon color="red" @click="$emit('MinusQuantity')">
+    <v-icon color="red" @click="$emit('MinusQuantity',item.PurchaseID,item.Quantity)">
     mdi-minus-box-outline
     </v-icon>
     </template>
@@ -117,7 +117,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem']);
       <v-sheet class="pa-2 ma-2 d-flex justify-center align-center">
         <div>
    
-    <p> ₱ {{ item.TotalPrice }}<br> Unit: {{ item.Unit }}</p>
+    <p> ₱ {{ item.TotalPrice }}<br> Unit: {{ item.TotalUnit }}</p>
     </div>
    </v-sheet>
       </v-col>
