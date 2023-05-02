@@ -58,23 +58,35 @@ const PushCart = useForm ({
   },
 
   methods: {
-    KeyisNumeric(event,PurchaseId) {
-      if (!/\d/.test(event.key)) {  event.preventDefault(); } //Preven Inputting Letters 
-      else{ //Else number is only allowed and run the code inside to get the input value then push to cartData
+    KeyisNumeric(event, PurchaseId) {
+      if (!/\d/.test(event.key)) {
+        event.preventDefault(); //Prevent Inputting Letters 
+      } else {
+        // Else number is only allowed and run the code inside to get the input value then push to cartData
+        const input = event.target;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        console.log(start)
+        let inputValue = parseInt(input.value, 10); // Convert existing input to a number
+        inputValue = isNaN(inputValue) ? 0 : inputValue; // Check if existing input is not a number, set to 0
 
-      let inputValue = parseInt(event.target.value + event.key, 10);
-  
-      const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
-      
+        if (start === end) {
+          // Input field is not selected, concatenate new input with existing value as a number
+          inputValue = parseInt(inputValue + event.key, 10); // Concatenate new input with existing value and convert to a number
+        } else {
+          // Input field is selected, replace selected text with new input as a number
+          inputValue = parseInt(input.value.slice(0, start) + event.key + input.value.slice(end), 10); // Replace selected text with new input and convert to a number
+        }
+
+        const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
+
         if (index !== -1) {
           this.cartData[index].Quantity == inputValue;
-        
-          // ERROR IN GETTING THE TOTAL AND UNIT
-        //   this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * inputValue).toFixed(2); 
-        // this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * inputValue); 
-       
+          
+          // Get the total and unit using the new input value
+          this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * inputValue).toFixed(2); 
+          this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * inputValue); 
         }
-       
       }
     },
 
