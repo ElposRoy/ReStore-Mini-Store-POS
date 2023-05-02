@@ -20,6 +20,7 @@ const PushCart = useForm ({
   Unit:'',
   Quantity: 1,
   TotalPrice: '',
+  TotalUnit: '',
 });
 </script>
 
@@ -57,11 +58,32 @@ const PushCart = useForm ({
   },
 
   methods: {
+    KeyisNumeric(event,PurchaseId) {
+      if (!/\d/.test(event.key)) {  event.preventDefault(); } //Preven Inputting Letters 
+      else{ //Else number is only allowed and run the code inside to get the input value then push to cartData
+
+      let inputValue = parseInt(event.target.value + event.key, 10);
+  
+      const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
+      
+        if (index !== -1) {
+          this.cartData[index].Quantity == inputValue;
+        
+          // ERROR IN GETTING THE TOTAL AND UNIT
+        //   this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * inputValue).toFixed(2); 
+        // this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * inputValue); 
+       
+        }
+       
+      }
+    },
+
     selectCategory(item){
    
       this.selectedCategory.categoryId = item
       // console.log(this.selectedCategory.categoryId)
     },
+
     addToCart(purchase,product) {
    
       // Error with this commented code is, 
@@ -86,13 +108,15 @@ const PushCart = useForm ({
   newCartItem.OrigPrice = purchase.original_price;
   newCartItem.SalePrice = purchase.sale_price;
   newCartItem.Unit = product.unit;
+  newCartItem.TotalUnit = product.unit;
   newCartItem.Quantity = 1;
   newCartItem.TotalPrice = purchase.sale_price; //Total price will start at sale price and add on when quantity is addedd
 
   // newCartItem.Quantity = product.unit; Quantity is fixed to 1
   
   this.cartData.push(newCartItem);
-  
+
+
     
     },
 
@@ -106,21 +130,40 @@ const PushCart = useForm ({
     
     },
 
-    MinusQuantity(){
-      console.log('Minus')
-    },
-    AddQuantity(PurchaseId,Qty){
+    MinusQuantity(PurchaseId,Quantity){
       const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
 
-    if (index !== -1) {
-      this.cartData[index].Quantity = Qty;
-    }
+      if(Quantity <= 1){
+       
+      }
+      else{
+        if (index !== -1) {
+          this.cartData[index].Quantity -= 1;
+        this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
+        this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * this.cartData[index].Quantity); 
 
 
+        }
+      }
+     
     },
+
+    AddQuantity(PurchaseId){
+     
+      const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
+
+      if (index !== -1) {
+        this.cartData[index].Quantity = +this.cartData[index].Quantity + 1;   //+this.cartData[index].Quantity (The + sign turns the string value to number)
+        this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
+        this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * this.cartData[index].Quantity); 
+
+      }
+     
+    },
+
     clearCart(){
       this.cartData=[]
-    }
+    },
   },
   }
 </script>
@@ -147,6 +190,7 @@ const PushCart = useForm ({
 
                   <!-- Cart Area -->
                   <CartArea
+                  @KeyisNumeric="KeyisNumeric"
                   :cartData="cartData"
                   @clearCart="clearCart"
                   @MinusQuantity="MinusQuantity"
@@ -167,7 +211,7 @@ const PushCart = useForm ({
 <style>
   .input-background-color input {
     border-radius: 10%;
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(236, 236, 236);
     color: rgb(0, 0, 0);
   }
 </style>
