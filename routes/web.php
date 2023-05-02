@@ -45,7 +45,6 @@ Route::resource('products.purchases', PurchaseController::class) //Purchase ROUT
     ->middleware(['auth', 'verified']);
 
 
-
 Route::resource('purchases', PurchaseController::class) //Purchase Link
 ->only(['index', 'store', 'update','destroy'])
 ->middleware(['auth', 'verified']);
