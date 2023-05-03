@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
 defineProps(['cartData']);
-defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric']);
+defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric','handleQuantityInputKeyDown']);
 </script>
 
 <script>
@@ -15,7 +15,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
 </script>
 
 <template>
-<v-col cols="12" sm="4" md="4" >
+<v-col cols="12" sm="3" md="3" >
     <v-card
        class="mx-auto "
        
@@ -45,7 +45,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
       
        <v-card
        class="overflow-y-auto"
-       height="600"
+       height="540"
        >
          <v-card 
        class="m-2"
@@ -62,8 +62,8 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
       >
       <v-sheet class="pa-1 ma-1 d-flex justify-center align-center">
     <v-avatar
-      class=""
-      size="70"
+      class="ms-2"
+      size="60"
       rounded="0"
     >
       <v-img  :src="item.ProductImage ? 'http://127.0.0.1:8000/'+item.ProductImage : baseurl+'/images/DefaultImage.png'"></v-img>
@@ -92,7 +92,12 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
       >
       <v-sheet class="pa-1 ma-1 d-flex justify-center align-center">
         <div style="width: 150px;">
-    <v-text-field class="input-background-color align-text-center" @keypress="$emit('KeyisNumeric',$event,item.PurchaseID)" v-model="item.Quantity">
+    <v-text-field class="input-background-color align-text-center" 
+    @keypress="$emit('KeyisNumeric',$event,item.PurchaseID)" 
+    @keydown="$emit('handleQuantityInputKeyDown',$event,item.PurchaseID)"
+    v-model="item.Quantity">
+
+    
     <template v-slot:append>
     <v-icon color="green" @click="$emit('AddQuantity',item.PurchaseID)" >
     mdi-plus-box-outline
@@ -139,10 +144,16 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
      <v-divider :thickness="6" class="border-opacity-100"></v-divider>
 
      <v-card
-     class="pa-2">
-     Total
+     class="pa-4 ">
+     <v-sheet class="d-flex justify-space-between">
+      <p>TOTAL</p>
+      <p>₱ 69.00</p>
+     </v-sheet>
+  
+     <v-divider :thickness="4" class="border-opacity-100"></v-divider>
      </v-card>
        
+   
      </v-col>
 
     </template>

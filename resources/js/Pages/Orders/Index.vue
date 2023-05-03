@@ -28,6 +28,7 @@ const PushCart = useForm ({
 
 
   export default {
+   
     // props: ['categories'], <-- You can also use this props instead of the top defineProps
     // Use Created for consoling when refreshed or reloaded
     created() {
@@ -58,23 +59,43 @@ const PushCart = useForm ({
   },
 
   methods: {
+    handleQuantityInputKeyDown(event, PurchaseId) {
+      const input = event.target;
+
+    //Set Timeout to get the 0 or null value because it still gets the current value when deleting it.
+      setTimeout(() => {
+        if (input.value === '') {
+       
+        const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
+
+        if (index !== -1) {
+          this.cartData[index].Quantity = 1 ;
+          this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * 1).toFixed(2); 
+          this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * 1); 
+        }
+        event.preventDefault();
+      }
+    }, 200);
+    },
+
     KeyisNumeric(event, PurchaseId) {
+
       if (!/\d/.test(event.key)) {
         event.preventDefault(); //Prevent Inputting Letters 
-      } else {
-        // Else number is only allowed and run the code inside to get the input value then push to cartData
+      } 
+          else {
         const input = event.target;
         const start = input.selectionStart;
         const end = input.selectionEnd;
-        console.log(start)
-        let inputValue = parseInt(input.value, 10); // Convert existing input to a number
-        inputValue = isNaN(inputValue) ? 0 : inputValue; // Check if existing input is not a number, set to 0
-
+          
+        let inputValue = input.value.trim(); // Get input value and remove whitespace
+        
         if (start === end) {
-          // Input field is not selected, concatenate new input with existing value as a number
           inputValue = parseInt(inputValue + event.key, 10); // Concatenate new input with existing value and convert to a number
-        } else {
-          // Input field is selected, replace selected text with new input as a number
+          
+        } 
+
+        else {
           inputValue = parseInt(input.value.slice(0, start) + event.key + input.value.slice(end), 10); // Replace selected text with new input and convert to a number
         }
 
@@ -82,8 +103,6 @@ const PushCart = useForm ({
 
         if (index !== -1) {
           this.cartData[index].Quantity == inputValue;
-          
-          // Get the total and unit using the new input value
           this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * inputValue).toFixed(2); 
           this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * inputValue); 
         }
@@ -176,6 +195,7 @@ const PushCart = useForm ({
     clearCart(){
       this.cartData=[]
     },
+
   },
   }
 </script>
@@ -184,7 +204,7 @@ const PushCart = useForm ({
     <Head title="Orders" />
   
     <AuthenticatedLayout>
-     <div class="m-2">
+     <div class="m-4">
       <v-row >
        
         <CategoriesAndProduct
@@ -202,6 +222,7 @@ const PushCart = useForm ({
 
                   <!-- Cart Area -->
                   <CartArea
+                  @handleQuantityInputKeyDown="handleQuantityInputKeyDown"
                   @KeyisNumeric="KeyisNumeric"
                   :cartData="cartData"
                   @clearCart="clearCart"
