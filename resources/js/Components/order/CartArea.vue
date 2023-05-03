@@ -15,7 +15,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
 </script>
 
 <template>
-<v-col cols="12" sm="3" md="3" >
+<v-col cols="12" sm="4" md="4" >
     <v-card
        class="mx-auto "
        
@@ -143,15 +143,25 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
      </v-card>
      <v-divider :thickness="6" class="border-opacity-100"></v-divider>
 
-     <v-card
-     class="pa-4 ">
-     <v-sheet class="d-flex justify-space-between">
-      <p>TOTAL</p>
-      <p>₱ 69.00</p>
-     </v-sheet>
-  
-     <v-divider :thickness="4" class="border-opacity-100"></v-divider>
-     </v-card>
+     <v-card class="pa-4">
+
+    
+
+  <v-sheet class="d-flex justify-space-between">
+
+    <p>TOTAL</p>
+    <p>₱ 69.00</p>
+  </v-sheet>
+
+  <v-divider :thickness="4" class="border-opacity-100"></v-divider>
+
+  <v-sheet justify="center" align="center" class="pa-1 ma-1 rounded-pill" color="indigo-lighten-1" >
+    <v-btn prepend-icon="mdi-cash" append-icon="mdi-cash">
+      PAYMENT
+    </v-btn>
+  </v-sheet>
+</v-card>
+
        
    
      </v-col>

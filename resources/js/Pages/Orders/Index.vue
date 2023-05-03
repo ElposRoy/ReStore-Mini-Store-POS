@@ -13,12 +13,12 @@ const selectedCategory = useForm ({
 const PushCart = useForm ({
   ProductID : null,
   PurchaseID : null,
-  ProductImage: null,
-  ProductName: '',
-  OrigPrice: '',
+  // ProductImage: null,
+  // ProductName: '',
+  // OrigPrice: '',
   SalePrice: '',
-  Unit:'',
-  Quantity: 1,
+  // Unit:'',
+  Quantity: '',
   TotalPrice: '',
   TotalUnit: '',
 });

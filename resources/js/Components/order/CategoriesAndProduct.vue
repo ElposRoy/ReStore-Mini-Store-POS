@@ -38,7 +38,7 @@ defineEmits(['selectCategory','addToCart']);
 
 <template>
 
-<v-col cols="12" sm="9" md="9" >
+<v-col cols="12" sm="8" md="8" >
     <v-card class="mx-auto">
 
       <!--  New Solution, Use v-slide-group-->
