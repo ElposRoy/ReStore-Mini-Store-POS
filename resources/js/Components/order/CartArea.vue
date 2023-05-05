@@ -2,7 +2,7 @@
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
-defineProps(['cartData']);
+defineProps(['cartData','TotalPriceSum']);
 defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric','handleQuantityInputKeyDown']);
 </script>
 
@@ -122,7 +122,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
       <v-sheet class="pa-2 ma-2 d-flex justify-center align-center">
         <div>
    
-    <p> ₱ {{ item.TotalPrice }}<br> Unit: {{ item.TotalUnit }}</p>
+    <p> ₱ {{ item.Price }}<br> Unit: {{ item.TotalUnit }}</p>
     </div>
    </v-sheet>
       </v-col>
@@ -150,7 +150,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
   <v-sheet class="d-flex justify-space-between">
 
     <p>TOTAL</p>
-    <p>₱ 69.00</p>
+    <p class="text-h5">₱ {{TotalPriceSum ? TotalPriceSum : 0 }}</p>
   </v-sheet>
 
   <v-divider :thickness="4" class="border-opacity-100"></v-divider>
