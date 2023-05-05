@@ -95,15 +95,37 @@ rounded
    
         :gradient="product.purchases.length !== 0 ? 'to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)' : 'to bottom, rgba(2,0,36,0.5676471272102591), rgba(1161,30,30,0.3939776594231442)'"
         height="200px"
+        width="100%"
         cover
       >
-        <v-card-title  class="text-white" v-text="product.product_name"></v-card-title>
+        <v-card-title  class="text-white">
+          <div class="d-flex justify-space-between">
+            <v-chip
+         variant="elevated"
+      class="ma-1"
+      color="light-blue-lighten-4"
+    >
+    <p>  {{ product.product_name }}</p>
+    </v-chip>
+
+           
+            <v-chip
+            
+      class="ma-2"
+      color="light-blue-lighten-5"
+    >
+    {{ product.unit }} Unit
+    </v-chip>
+         
+          </div>
+        
+        </v-card-title>
       </v-img>
 
       <v-card-actions v-if="!product.purchases.length == 0" v-for="purchase in product.purchases" >
     
           <v-card-text>
-              {{ product.unit}} Unit
+            {{ purchase.quantity }} Qty.
             </v-card-text>
 
             <v-card-text >
