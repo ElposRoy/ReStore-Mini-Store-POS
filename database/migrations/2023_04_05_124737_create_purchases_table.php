@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products','id')->nullable();
             $table->decimal('original_price');
             $table->decimal('sale_price');
+            $table->integer('total_item');
             $table->integer('quantity');
             $table->date('purchased_at');
             $table->date('expired_at')->nullable();

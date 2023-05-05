@@ -49,6 +49,7 @@ class PurchaseController extends Controller
             'product_id' => $validated['product_id'],
             'original_price' => $validated['original_price'],
             'sale_price' => $validated['sale_price'],
+            'total_item'=>$validated['quantity'],
             'quantity' => $validated['quantity'],
             'purchased_at' => $validated['purchasedDate'],
             'expired_at' => $validated['expirationDate'],

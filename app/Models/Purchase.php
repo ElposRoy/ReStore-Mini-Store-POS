@@ -16,6 +16,7 @@ class Purchase extends Model
         'sale_price',
         'stock_level' ,
         'quantity',
+        'total_item',
         'purchased_at',
         'expired_at',
     ];
