@@ -19,8 +19,9 @@ const PushCart = useForm ({
   SalePrice: '',
   // Unit:'',
   Quantity: '',
-  TotalPrice: '',
-  TotalUnit: '',
+  Price: '',
+  TotalUnit:'',
+  TotalPrice: 0,
 });
 </script>
 
@@ -40,7 +41,7 @@ const PushCart = useForm ({
 
 
     data: () => ({
-   
+      TotalPriceSum: null,
       isSelected: false,
       baseurl: location.origin,
       cartData: [
@@ -59,6 +60,7 @@ const PushCart = useForm ({
   },
 
   methods: {
+     //NOTE TO SELF ! WHen Key down add to total,
     handleQuantityInputKeyDown(event, PurchaseId) {
       const input = event.target;
 
@@ -70,14 +72,16 @@ const PushCart = useForm ({
 
         if (index !== -1) {
           this.cartData[index].Quantity = 1 ;
-          this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * 1).toFixed(2); 
-          this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * 1); 
+          this.cartData[index].Price = Number(this.cartData[index].SalePrice * 1).toFixed(2); 
+          this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * 1);
+        
         }
         event.preventDefault();
       }
     }, 200);
     },
 
+   
     KeyisNumeric(event, PurchaseId) {
 
       if (!/\d/.test(event.key)) {
@@ -103,7 +107,7 @@ const PushCart = useForm ({
 
         if (index !== -1) {
           this.cartData[index].Quantity == inputValue;
-          this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * inputValue).toFixed(2); 
+          this.cartData[index].Price = Number(this.cartData[index].SalePrice * inputValue).toFixed(2); 
           this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * inputValue); 
         }
       }
@@ -128,7 +132,7 @@ const PushCart = useForm ({
   // this.PushCart.OrigPrice=purchase.original_price;
   // this.PushCart.SalePrice=purchase.sale_price;
   // this.PushCart.Unit=product.unit;
-  // this.PushCart.TotalPrice=product.sale_price;
+  // this.PushCart.Price=product.sale_price;
   // this.cartData.push(this.PushCart);
 
   const newCartItem = {}; //New object to be store the values
@@ -141,16 +145,19 @@ const PushCart = useForm ({
   newCartItem.Unit = product.unit;
   newCartItem.TotalUnit = product.unit;
   newCartItem.Quantity = 1;
-  newCartItem.TotalPrice = purchase.sale_price; //Total price will start at sale price and add on when quantity is addedd
-
+  newCartItem.Price = purchase.sale_price; //Total price will start at sale price and add on when quantity is addedd
+ 
   // newCartItem.Quantity = product.unit; Quantity is fixed to 1
   
   this.cartData.push(newCartItem);
 
-
+  let total = 0;
+  total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
+  this.TotalPriceSum = parseFloat(total).toFixed(2);
     
     },
 
+    //Set the   this.cartData.Price back to its original price when removed from cart
     removeCartItem(itemID){
     // Find the index of the object with the matching id
     const index = this.cartData.findIndex((item) => item.PurchaseID === itemID);
@@ -163,17 +170,19 @@ const PushCart = useForm ({
 
     MinusQuantity(PurchaseId,Quantity){
       const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
-
+      let total = 0;
       if(Quantity <= 1){
        
       }
       else{
         if (index !== -1) {
           this.cartData[index].Quantity -= 1;
-        this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
+        this.cartData[index].Price = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
         this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * this.cartData[index].Quantity); 
 
-
+        total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
+      this.TotalPriceSum = parseFloat(total).toFixed(2);
+      // The total variable now contains the sum of all the Price values
         }
       }
      
@@ -182,16 +191,23 @@ const PushCart = useForm ({
     AddQuantity(PurchaseId){
      
       const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
-
+      let total = 0;
       if (index !== -1) {
         this.cartData[index].Quantity = +this.cartData[index].Quantity + 1;   //+this.cartData[index].Quantity (The + sign turns the string value to number)
-        this.cartData[index].TotalPrice = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
+        this.cartData[index].Price = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
         this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * this.cartData[index].Quantity); 
+           // Use reduce to sum all the prices
+          //  Number() at item.Price. Convert it from string to number
+      total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
+      this.TotalPriceSum = parseFloat(total).toFixed(2);
+      // The total variable now contains the sum of all the Price values
+     
 
       }
-     
+   
     },
-
+ 
+     //Set All of this.cartData.Price back to its original price when removed from cart
     clearCart(){
       this.cartData=[]
     },
@@ -225,6 +241,7 @@ const PushCart = useForm ({
                   @handleQuantityInputKeyDown="handleQuantityInputKeyDown"
                   @KeyisNumeric="KeyisNumeric"
                   :cartData="cartData"
+                  :TotalPriceSum="TotalPriceSum"
                   @clearCart="clearCart"
                   @MinusQuantity="MinusQuantity"
                   @AddQuantity="AddQuantity"
