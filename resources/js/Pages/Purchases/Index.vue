@@ -54,7 +54,8 @@ export default {
       { title: 'Product', key: 'product', align: 'center'},
       { title: 'Original Price', key: 'original_price' },
       { title: 'Sale Price', key: 'sale_price' },
-      { title: 'Quantity', key: 'quantity'},
+      { title: 'Items', key: 'total_item'},
+      { title: 'In Stock', key: 'quantity'},
       { title: 'Date Purchased', key: 'purchased_at'},
       { title: 'Expiration Date', key: 'expired_at'},
       { title: 'Actions', key: 'actions', sortable: false },
@@ -92,7 +93,7 @@ export default {
     },
 
     editItem (item) {
-      
+     
       this.isEdit=true;
       // this.dialogIndex=this.purchases.data.indexOf(item)
     restockForm.id=item.columns.id;
@@ -197,7 +198,7 @@ export default {
     :headers="headers"
     :items="purchases.data"
     :search="search"
-   
+    :items-per-page="10"
     :sort-by="[{ key: 'purchased_at', order: 'desc' }]"
     class="elevation-1"
   >

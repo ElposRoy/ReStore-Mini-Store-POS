@@ -82,7 +82,6 @@ export default {
   },
 
   created () {
-    
     this.initialize()
   },
 
@@ -93,7 +92,7 @@ export default {
     },
 
     rowClass(item) {
-
+      
       if (item.stock_level > this.getQuantity(item)) {
        
         return 'red'
@@ -121,7 +120,7 @@ export default {
 
 
     getQuantity(item){
-
+      
       return item.purchases?.reduce((acc,row)=>{
         acc+=row.quantity
         return acc

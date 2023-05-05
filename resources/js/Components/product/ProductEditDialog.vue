@@ -17,6 +17,9 @@ export default {
       
     };
   },
+  created () {
+    console.log('asd')
+  },
   watch: {
     
     isNoImage(newValue) {
