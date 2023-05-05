@@ -1,9 +1,9 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 
-defineEmits(['closeDialog','editSubmitForm'])
+defineEmits(['closeDialog','editSubmitForm','onFileChange'])
 
-defineProps(['dialogEdit','products','editForm','categories','unit_types',]);
+defineProps(['dialogEdit','products','editForm','categories','unit_types','url']);
 </script>
 
 <script>
@@ -12,21 +12,20 @@ export default {
     return {
       isNoImage: false,
       baseurl: location.origin,
-      oldImage: '' ,
-      url: null,
-      
+      oldImage: null,
     };
   },
   created () {
-    console.log('asd')
+      // console.log(this.url)
   },
   watch: {
+  
     
     isNoImage(newValue) {
       const currentImage = this.editForm.currentImage;
+     
       if (newValue) {
          //checked checkbox to hide the upload file input
-         
         this.oldImage = currentImage;
         this.editForm.image = '';
       
@@ -34,22 +33,15 @@ export default {
       } else {
        //unchecked checkbox to show the upload file input
     
-        this.editForm.image = this.oldImage || this.currentImage ;
-        
-        this.oldImage = '';
-        this.url=null;
-        
+        this.editForm.image = this.oldImage ;
+        this.oldImage = null;
+      
       
       }
     }
   },
   methods: {
-    onFileChange(e) {
-      
-      const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
-      
-    }
+   
   }
 }
 
@@ -94,7 +86,8 @@ export default {
                         rounded="0"
                         class="p-1"
                       >
-                        <v-img cover :src="url ? url : 'http://127.0.0.1:8000/'+editForm.image"></v-img>
+                      <!-- Is this the problem? When uUploading an image from one row, it displays that image to the other row -->
+                        <v-img cover :src="url ? url : 'http://127.0.0.1:8000/'+editForm.image"></v-img>  
                       </v-avatar> 
 
                   </v-col>
@@ -116,7 +109,7 @@ export default {
                   <div class="mb-4" v-if="!isNoImage">
                     <label for="file" class="block font-medium text-gray-700 mb-3">Change Image</label>
                     <input
-                      @change="onFileChange"
+                      @change="$emit('onFileChange',$event)"
                         @input="editForm.image=$event.target.files[0]"
                         type="file"
                         name="image"
