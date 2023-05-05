@@ -16,7 +16,7 @@ export default {
     };
   },
   created () {
-      // console.log(this.url)
+     
   },
   watch: {
   
@@ -32,11 +32,8 @@ export default {
         
       } else {
        //unchecked checkbox to show the upload file input
-    
         this.editForm.image = this.oldImage ;
         this.oldImage = null;
-      
-      
       }
     }
   },
