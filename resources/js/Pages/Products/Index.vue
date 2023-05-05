@@ -38,6 +38,7 @@ export default {
   
     data: () => ({
       baseurl : location.origin,
+      url: null,
       dialogRestock: false,
       dialog: false,
       snackbar: false,
@@ -90,6 +91,12 @@ export default {
     initialize () {
   
     },
+  
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
+     
+    },
 
     rowClass(item) {
       
@@ -116,9 +123,6 @@ export default {
       //  }
       },
      
-
-
-
     getQuantity(item){
       
       return item.purchases?.reduce((acc,row)=>{
@@ -128,7 +132,7 @@ export default {
     },
  
     openEdit(item) {
-
+      this.url=null
       editForm.id=item.columns.id;
       editForm.image=item.columns.image;
       editForm.currentImage=item.columns.image;
@@ -137,15 +141,14 @@ export default {
       editForm.stock_level=item.columns.stock_level;
       editForm.unit_type_id=item.columns.unit_type.id;
       editForm.category_id=item.columns.category.id
-
+     
     // this.editForm.image=item.columns.image;
     // this.editForm.id=item.columns.id;
     // this.editForm.price=item.columns.price;
     // this.editForm.quantity=item.columns.quantity;
     // this.editForm.category_id=item.columns.category.id;
    this.dialogEdit = true;
-    
-    
+      
   },
     openDelete(){
       this.dialogDelete = true;
@@ -161,7 +164,7 @@ export default {
 
     close () {
         this.dialogEdit = false
-        
+          
       },
     closeDelete () {
         this.dialogDelete = false
@@ -171,7 +174,7 @@ export default {
       this.restockForm.reset();
       
     },
-
+ 
 
       async deleteItemConfirm() {
         try {
@@ -184,7 +187,7 @@ export default {
         }
         },
 
-      editSubmitForm() {
+      editSubmitForm(editForm,url) {
         router.post(`/products/${this.editForm.id}`, {
           _method: 'put',
           ...this.editForm
@@ -193,6 +196,7 @@ export default {
             this.close();
             this.text = 'Successfully updated the product!'
             this.snackbar = true
+            
           },
           onError: () => {
             this.text = 'Something went wrong!'
@@ -248,10 +252,12 @@ export default {
     <AuthenticatedLayout>
       <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <v-data-table
+  
     :headers="headers"
     :items="products.data"
     :search="search"
     :item-class="rowClass"
+   
     :sort-by="[{ key: 'product_name', order: 'asc' }]"
     class="elevation-1"
   >
@@ -323,12 +329,13 @@ export default {
             </ProductAddDialog>
 
             <ProductEditDialog
-            
+            :url="url"
             :products="products"
             :categories="categories"
             :unit_types="unit_types"
             :dialogEdit="dialogEdit"
             :editForm="editForm"
+            @onFileChange="onFileChange"
             @closeDialog="dialogEdit=false"
             @editSubmitForm="editSubmitForm">
 
@@ -349,7 +356,7 @@ export default {
             @closeRestock="closeRestock"
             @saveRestock="saveRestock">
     
-     </ProductRestockDialog>
+      </ProductRestockDialog>
 
         </v-toolbar>
       </template>
@@ -369,7 +376,7 @@ export default {
       <v-icon
         size="small"
         class="me-2"
-        @click="openEdit(item)"
+        @click="openEdit(item,url)"
       >
         mdi-pencil
       </v-icon>
