@@ -27,7 +27,6 @@ const PushCart = useForm ({
 
 <script>
 
-
   export default {
    
     // props: ['categories'], <-- You can also use this props instead of the top defineProps
@@ -61,6 +60,13 @@ const PushCart = useForm ({
 
   methods: {
      //NOTE TO SELF ! WHen Key down add to total,
+     GetTotal(){
+      let total = 0;
+      total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
+      this.TotalPriceSum = parseFloat(total).toFixed(2)
+      return this.TotalPriceSum;
+     },
+     
     handleQuantityInputKeyDown(event, PurchaseId) {
       const input = event.target;
 
@@ -74,14 +80,13 @@ const PushCart = useForm ({
           this.cartData[index].Quantity = 1 ;
           this.cartData[index].Price = Number(this.cartData[index].SalePrice * 1).toFixed(2); 
           this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * 1);
-        
+          this.GetTotal();
         }
         event.preventDefault();
       }
     }, 200);
     },
 
-   
     KeyisNumeric(event, PurchaseId) {
 
       if (!/\d/.test(event.key)) {
@@ -120,57 +125,47 @@ const PushCart = useForm ({
     },
 
     addToCart(purchase,product) {
-   
+ 
       // Error with this commented code is, 
       // The issue with the code could be that this.PushCart is an object that is being modified and pushed into the cartData array.
       // Therefore, each time the addToCart function is called, it is modifying the same this.PushCart object and pushing it into the cartData array.
       // Pushcart should be used to submit to the controller
-  // this.PushCart.ProductID=product.id;
-  // this.PushCart.PurchaseID=purchase.id;
-  // this.PushCart.ProductImage=product.image;
-  // this.PushCart.ProductName=product.product_name;
-  // this.PushCart.OrigPrice=purchase.original_price;
-  // this.PushCart.SalePrice=purchase.sale_price;
-  // this.PushCart.Unit=product.unit;
-  // this.PushCart.Price=product.sale_price;
-  // this.cartData.push(this.PushCart);
 
-  const newCartItem = {}; //New object to be store the values
-  newCartItem.ProductID = product.id;
-  newCartItem.PurchaseID = purchase.id;
-  newCartItem.ProductImage = product.image;
-  newCartItem.ProductName = product.product_name;
-  newCartItem.OrigPrice = purchase.original_price;
-  newCartItem.SalePrice = purchase.sale_price;
-  newCartItem.Unit = product.unit;
-  newCartItem.TotalUnit = product.unit;
-  newCartItem.Quantity = 1;
-  newCartItem.Price = purchase.sale_price; //Total price will start at sale price and add on when quantity is addedd
- 
-  // newCartItem.Quantity = product.unit; Quantity is fixed to 1
+      const newCartItem = {}; //New object to be store the values
+      newCartItem.ProductID = product.id;
+      newCartItem.PurchaseID = purchase.id;
+      newCartItem.ProductImage = product.image;
+      newCartItem.ProductName = product.product_name;
+      newCartItem.OrigPrice = purchase.original_price;
+      newCartItem.SalePrice = purchase.sale_price;
+      newCartItem.Unit = product.unit;
+      newCartItem.TotalUnit = product.unit;
+      newCartItem.Quantity = 1;
+      newCartItem.Price = purchase.sale_price; //Total price will start at sale price and add on when quantity is addedd
+    
+      // newCartItem.Quantity = product.unit; Quantity is fixed to 1
   
-  this.cartData.push(newCartItem);
-
-  let total = 0;
-  total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
-  this.TotalPriceSum = parseFloat(total).toFixed(2);
+        this.cartData.push(newCartItem);
+        this.GetTotal();
     
     },
 
-    //Set the   this.cartData.Price back to its original price when removed from cart
+    //Set the this.cartData.Price back to its original price when removed from cart
     removeCartItem(itemID){
     // Find the index of the object with the matching id
     const index = this.cartData.findIndex((item) => item.PurchaseID === itemID);
     // If the object exists, remove it from the array
     if (index !== -1) {
       this.cartData.splice(index, 1);
+      this.GetTotal();
+        //Call the GetTotal Function to Calculate the total
     }
     
     },
 
     MinusQuantity(PurchaseId,Quantity){
       const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
-      let total = 0;
+   
       if(Quantity <= 1){
        
       }
@@ -180,8 +175,8 @@ const PushCart = useForm ({
         this.cartData[index].Price = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
         this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * this.cartData[index].Quantity); 
 
-        total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
-      this.TotalPriceSum = parseFloat(total).toFixed(2);
+        this.GetTotal();
+      //Call the GetTotal Function to Calculate the total
       // The total variable now contains the sum of all the Price values
         }
       }
@@ -191,16 +186,17 @@ const PushCart = useForm ({
     AddQuantity(PurchaseId){
      
       const index = this.cartData.findIndex((item) => item.PurchaseID === PurchaseId);
-      let total = 0;
+     
       if (index !== -1) {
         this.cartData[index].Quantity = +this.cartData[index].Quantity + 1;   //+this.cartData[index].Quantity (The + sign turns the string value to number)
         this.cartData[index].Price = Number(this.cartData[index].SalePrice * this.cartData[index].Quantity).toFixed(2); // Calculate the Total price when adding Quantity 
         this.cartData[index].TotalUnit = Number(this.cartData[index].Unit * this.cartData[index].Quantity); 
-           // Use reduce to sum all the prices
+          // Use reduce to sum all the prices
           //  Number() at item.Price. Convert it from string to number
-      total = this.cartData.reduce((acc, item) => acc + Number(item.Price), 0);
-      this.TotalPriceSum = parseFloat(total).toFixed(2);
-      // The total variable now contains the sum of all the Price values
+
+          this.GetTotal();
+        //Call the GetTotal Function to Calculate the total
+        // The total variable now contains the sum of all the Price values
      
 
       }
@@ -210,6 +206,8 @@ const PushCart = useForm ({
      //Set All of this.cartData.Price back to its original price when removed from cart
     clearCart(){
       this.cartData=[]
+     this.GetTotal();
+        //Call the GetTotal Function to Calculate the total
     },
 
   },
