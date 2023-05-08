@@ -43,7 +43,9 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       dd($request->all());
+        // Do something with $cartData, like storing it in the database
+        
     }
 
     /**
