@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
 defineProps(['cartData','TotalPriceSum']);
-defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric','handleQuantityInputKeyDown']);
+defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric','handleQuantityInputKeyDown','SubmitOrder']);
 </script>
 
 <script>
@@ -156,7 +156,8 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
   <v-divider :thickness="4" class="border-opacity-100"></v-divider>
 
   <v-sheet justify="center" align="center" class="pa-1 ma-1 rounded-pill" color="indigo-lighten-1" >
-    <v-btn prepend-icon="mdi-cash" append-icon="mdi-cash">
+    <v-btn prepend-icon="mdi-cash" append-icon="mdi-cash"  
+    @click="$emit('SubmitOrder')">
       PAYMENT
     </v-btn>
   </v-sheet>

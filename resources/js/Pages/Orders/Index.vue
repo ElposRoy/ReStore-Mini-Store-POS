@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { router } from '@inertiajs/vue3'
+
 import { useForm, Head } from '@inertiajs/vue3';
 import CartArea from '@/Components/order/CartArea.vue';
 import CategoriesAndProduct from '@/Components/order/CategoriesAndProduct.vue';
@@ -10,19 +11,10 @@ const selectedCategory = useForm ({
   categoryId : null,
 });
 
-const PushCart = useForm ({
-  ProductID : null,
-  PurchaseID : null,
-  // ProductImage: null,
-  // ProductName: '',
-  // OrigPrice: '',
-  SalePrice: '',
-  // Unit:'',
-  Quantity: '',
-  Price: '',
-  TotalUnit:'',
-  TotalPrice: 0,
+const PushCart= useForm ({
+  myCart: [],
 });
+
 </script>
 
 <script>
@@ -43,10 +35,7 @@ const PushCart = useForm ({
       TotalPriceSum: null,
       isSelected: false,
       baseurl: location.origin,
-      cartData: [
-      
-
-      ],
+      cartData: [ ],
     }),
     
   computed: {
@@ -150,7 +139,7 @@ const PushCart = useForm ({
     
     },
 
-    //Set the this.cartData.Price back to its original price when removed from cart
+  
     removeCartItem(itemID){
     // Find the index of the object with the matching id
     const index = this.cartData.findIndex((item) => item.PurchaseID === itemID);
@@ -202,8 +191,14 @@ const PushCart = useForm ({
       }
    
     },
+    SubmitOrder() {
+          // Send cartData to server
+         
+          this.PushCart.post(route('orders.store'))
+   
+      },
  
-     //Set All of this.cartData.Price back to its original price when removed from cart
+  
     clearCart(){
       this.cartData=[]
      this.GetTotal();
@@ -236,6 +231,7 @@ const PushCart = useForm ({
 
                   <!-- Cart Area -->
                   <CartArea
+                  @SubmitOrder="SubmitOrder"
                   @handleQuantityInputKeyDown="handleQuantityInputKeyDown"
                   @KeyisNumeric="KeyisNumeric"
                   :cartData="cartData"
