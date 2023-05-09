@@ -2,7 +2,7 @@
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
-defineProps(['categories','products','selectedCategory','cartData']);
+defineProps(['categories','products','selectedCategory','PushCart']);
 defineEmits(['selectCategory','addToCart']);
 
 </script>
@@ -11,6 +11,8 @@ defineEmits(['selectCategory','addToCart']);
   export default {
     data: () => ({
       baseurl: location.origin,
+      
+      page: parseInt(localStorage.getItem('currentPage')) || 1,
      
     }),
     created(){
@@ -18,10 +20,11 @@ defineEmits(['selectCategory','addToCart']);
     },
 
     methods:{
-      checkAddedd(purchaseID){
+      checkAddedd(PurchaseId){
+        
     // Find the index of the object with the matching id
-    const index = this.cartData.findIndex((item) => item.PurchaseID === purchaseID);
-       
+    const index = this.PushCart.myCart.findIndex((item) => item.PurchaseID === PurchaseId);
+      
     // If the object exists, remove it from the array
     if (index !== -1) {
       return true;
@@ -30,6 +33,15 @@ defineEmits(['selectCategory','addToCart']);
       return false;
     }
     },
+    onPageChanged(pageNumber) {
+      localStorage.setItem('currentPage', this.page);
+     console.log(this.products.current_page)
+      // console.log(`Page ${pageNumber} was selected`);
+      this.$inertia.visit(`/orders?page=${pageNumber}`);
+    //  console.log(this.page) this.page is outputting 1,2,3
+    // console.log(pageNumber) this pageNumber is outputting only 1. Fix this one
+    },
+   
     }
   }
 </script>
@@ -134,7 +146,7 @@ rounded
      
      
 
-      <!-- Note: checkAddedd is a function at top, it checks for the product id in the cartData Array-->
+      <!-- Note: checkAddedd is a function at top, it checks for the product id in the PushCart.myCart Array-->
       <!-- New problem, change the product.id to purchase because when one product has two choice and select one, both got add button changes -->
       <!-- at @click emit change the product to purchase -->
         <v-btn  v-if="!checkAddedd(purchase.id)" prepend-icon="mdi mdi-plus-box" variant="tonal" color="success" @click="$emit('addToCart', purchase, product)"> 
@@ -163,13 +175,32 @@ rounded
     </v-card>
   </v-col>
 
-</v-row>
-</v-container>
-    </v-card>  
-  
-    
+    </v-row>
 
-</v-card>
+    <!-- PAGINATION -->
+    <v-container>
+      <v-sheet class="text-center mt-3">
+        <v-pagination
+          v-model="page"
+          :length="products.last_page"
+          :total-visible="7"
+          hide-default-footer
+          @update:modelValue="onPageChanged(products.current_page)"
+      
+        
+        ></v-pagination>
+        
+      </v-sheet >
+    </v-container>
+    <!-- PAGINATION -->
+
+
+    </v-container>
+        </v-card>  
+      
+        
+
+    </v-card>
 </v-col>
 
     
