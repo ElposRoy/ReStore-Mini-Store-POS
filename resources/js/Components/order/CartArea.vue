@@ -2,7 +2,7 @@
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 
-defineProps(['cartData','TotalPriceSum']);
+defineProps(['PushCart','TotalPriceSum']);
 defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNumeric','handleQuantityInputKeyDown','SubmitOrder']);
 </script>
 
@@ -27,7 +27,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
        </template>
        <template v-slot:append>
         <v-btn
-        v-if="cartData.length!==0"
+        v-if="PushCart.myCart.length!==0"
         size="x-small"
         class="ma-2"
         color="red"
@@ -50,7 +50,7 @@ defineEmits(['MinusQuantity','AddQuantity','clearCart','removeCartItem','KeyisNu
          <v-card 
        class="m-2"
        variant="outlined"
-       v-for="(item, index) in cartData"
+       v-for="(item, index) in PushCart.myCart"
        :key="index"
        >  
       
