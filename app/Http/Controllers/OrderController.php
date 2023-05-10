@@ -21,7 +21,7 @@ class OrderController extends Controller
            
             'products' => Product::with(['purchases' => function ($query) {
             $query->where('quantity', '>', 0);
-            }])->paginate(2),
+            }])->paginate(3),
             
             'categories'=> Category::all(),
           
