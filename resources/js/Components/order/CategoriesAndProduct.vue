@@ -12,16 +12,16 @@ defineEmits(['selectCategory','addToCart']);
     data: () => ({
       baseurl: location.origin,
       
-      page: parseInt(localStorage.getItem('currentPage')) || 1,
-     
+      page: parseInt(localStorage.getItem('currentPage')) || 1, //When currentPage is empty, value is 1.
+      
     }),
     created(){
+      // console.log(this.PushCart.Total)
       // console.log(this.products.id)
     },
 
     methods:{
       checkAddedd(PurchaseId){
-        
     // Find the index of the object with the matching id
     const index = this.PushCart.myCart.findIndex((item) => item.PurchaseID === PurchaseId);
       
@@ -34,10 +34,16 @@ defineEmits(['selectCategory','addToCart']);
     }
     },
     onPageChanged(pageNumber) {
-      localStorage.setItem('currentPage', this.page);
-     console.log(this.products.current_page)
-      // console.log(`Page ${pageNumber} was selected`);
+    
       this.$inertia.visit(`/orders?page=${pageNumber}`);
+      localStorage.setItem('currentPage', this.page); // Store this to Local Session for Data page: 
+    
+      localStorage.setItem('currentCart', JSON.stringify(this.PushCart.myCart));
+    
+      
+    
+      
+    // console.log(`Page ${pageNumber} was selected`);
     //  console.log(this.page) this.page is outputting 1,2,3
     // console.log(pageNumber) this pageNumber is outputting only 1. Fix this one
     },
@@ -52,36 +58,45 @@ defineEmits(['selectCategory','addToCart']);
 
 <v-col cols="12" sm="8" md="8" >
     <v-card class="mx-auto">
-
+    
       <!--  New Solution, Use v-slide-group-->
       <v-col cols="12" sm="12" md="12">
         CATEGORIES
-        <v-list v-model="selectedCategory.categoryId">
-</v-list>
-<v-sheet
-class="mx-auto"
->
-<v-slide-group
-show-arrows
-@category-selected="selectedCategory.categoryId = $event"
->
-<v-slide-group-item
-v-for="(category) in categories"
-:key="category.id"
+        
+              <v-list v-model="selectedCategory.categoryId">
+      </v-list>
+      <v-sheet
+      class="mx-auto"
+      >
+      <v-slide-group
+      show-arrows
+      @category-selected="selectedCategory.categoryId = $event"
+      >
+      <v-btn
+      class="ma-2"
+      rounded
+      :color="selectedCategory.categoryId === '' ? 'blue-lighten-1' : undefined"
+      @click="$emit('selectCategory','')"
+      >
+      All
+      </v-btn>
+      <v-slide-group-item
+      v-for="(category) in categories"
+      :key="category.id"
 
->
-<v-btn
-class="ma-2"
-rounded
-:color="selectedCategory.categoryId === category.id ? 'success' : undefined"
-@click="$emit('selectCategory',category.id)"
->
-{{ category.title }}
-</v-btn>
-</v-slide-group-item>
+      >
+      <v-btn
+      class="ma-2"
+      rounded
+      :color="selectedCategory.categoryId === category.id ? 'success' : undefined"
+      @click="$emit('selectCategory',category.id)"
+      >
+      {{ category.title }}
+      </v-btn>
+      </v-slide-group-item>
 
-</v-slide-group>
-</v-sheet>
+      </v-slide-group>
+      </v-sheet>
 
 
 
@@ -91,7 +106,22 @@ rounded
       <v-card
       class="mx-auto"
       >
+      
       <v-container fluid>
+        <v-row>
+        <v-col cols="5">
+          <!-- <v-autocomplete
+            v-model="Search"
+            :items="products.product_name"
+            :values="products.id"
+            label="Search"
+            density="compact"
+          ></v-autocomplete> -->
+        </v-col>
+
+        
+      </v-row>
+
         <v-row >
           <v-col 
     v-for="product in products.data" 
@@ -137,7 +167,7 @@ rounded
       <v-card-actions v-if="!product.purchases.length == 0" v-for="purchase in product.purchases" >
     
           <v-card-text>
-            {{ purchase.quantity }} Qty.
+            {{ purchase.quantity }} In Stock
             </v-card-text>
 
             <v-card-text >
@@ -185,7 +215,7 @@ rounded
           :length="products.last_page"
           :total-visible="7"
           hide-default-footer
-          @update:modelValue="onPageChanged(products.current_page)"
+          @update:modelValue="onPageChanged"
       
         
         ></v-pagination>

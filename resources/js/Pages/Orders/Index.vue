@@ -12,7 +12,7 @@ const selectedCategory = useForm ({
 });
 
 const PushCart= useForm ({
-  myCart: [],
+  myCart: JSON.parse(localStorage.getItem('currentCart')) || [],
   Total: 0,
 });
 
@@ -33,7 +33,7 @@ const PushCart= useForm ({
 
 
     data: () => ({
-      TotalPriceSum: null,
+      TotalPriceSum: parseInt(localStorage.getItem('currentTotal')) || null,
       isSelected: false,
       baseurl: location.origin,
      
@@ -54,6 +54,7 @@ const PushCart= useForm ({
       let total = 0;
       total = this.PushCart.myCart.reduce((acc, item) => acc + Number(item.Price), 0);
       this.TotalPriceSum = parseFloat(total).toFixed(2)
+      localStorage.setItem('currentTotal', this.TotalPriceSum); 
       return this.TotalPriceSum;
      },
      
@@ -140,7 +141,6 @@ const PushCart= useForm ({
   
         this.PushCart.myCart.push(newCartItem);
         this.GetTotal();
-     
     
     },
 
@@ -205,10 +205,13 @@ const PushCart= useForm ({
   
     clearCart(){
       this.PushCart.myCart=[]
+      localStorage.removeItem('currentCart');
+     
      this.GetTotal();
         //Call the GetTotal Function to Calculate the total
     },
 
+    
   },
   }
 </script>
@@ -227,7 +230,7 @@ const PushCart= useForm ({
         :products="products"
         :categories="categories"
         :selectedCategory ="selectedCategory "
-
+      
         >
 
         </CategoriesAndProduct>
