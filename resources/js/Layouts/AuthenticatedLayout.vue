@@ -7,8 +7,9 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
-
+// import {usePermission} from '@/Composable/permission';
 const showingNavigationDropdown = ref(false);
+// const { hasRole } = usePermission();
 </script>
 
 <template>
@@ -40,6 +41,7 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('purchases.index')" :active="route().current('purchases.index')">
                                     Purchases
                                 </NavLink>
+                                
                                 <NavLink :href="route('orders.index')" :active="route().current('orders.index')">
                                     POS
                                 </NavLink>

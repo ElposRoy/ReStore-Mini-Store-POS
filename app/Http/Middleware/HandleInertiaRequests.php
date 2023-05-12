@@ -31,8 +31,12 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
+            
+
+
             'auth' => [
                 'user' => $request->user(),
+                'userRoles' => $request->user() ? $request -> user() -> roles -> pluck('name'): [], // Use this to create a new Object in the Vue developer tool 
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
