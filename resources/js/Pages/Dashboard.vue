@@ -5,7 +5,6 @@ import { Head } from '@inertiajs/vue3';
 </script>
 
 <script>
-  
 export default{
   data(){
     return ({
@@ -27,12 +26,12 @@ export default{
         <div class="py-12" >
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <v-container class="">
-                    <v-row no-gutters>
 
-                      <!--  v-if="$page.props.auth.userRoles.includes('admin')"  is to check in the userRoles Props if admin -->
+                   <!--  v-if="$page.props.auth.userRoles.includes('admin')"  is to check in the userRoles Props if admin -->
+              <v-container   v-if="$page.props.auth.userRoles.includes('admin')" >
+              <v-row no-gutters>
             <v-card
-            v-if="$page.props.auth.userRoles.includes('admin')" 
+          
             color="#1F7087"
             theme="dark"
           >

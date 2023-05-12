@@ -32,9 +32,18 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified','role:admin'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
+Route::get('/Admin', function () {
+    return Inertia::render('Admin/Index');
+})->middleware(['auth', 'verified','role:admin'])->name('Admin');
+
+
+// Just delete this, just for testing SEM
+Route::get('/Sem', function () {
+    return Inertia::render('Admin/Index');
+})->middleware(['auth', 'verified','role:admin'])->name('Sem');
 
 
 
@@ -42,7 +51,7 @@ Route::resource('products', ProductController::class) //Product ROUTE
     ->only(['index','create', 'store', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
-Route::resource('products.purchases', PurchaseController::class) //Purchase ROUTE in the product page
+Route::resource('products.purchases', PurchaseController::class) //Purchase ROUTE in the product page, this allows to store in the purchase controller
     ->only(['store'])
     ->middleware(['auth', 'verified']);
 
@@ -55,8 +64,6 @@ Route::resource('purchases', PurchaseController::class) //Purchase Link
 Route::resource('orders', OrderController::class) //Order Link
 ->only(['index', 'store', 'update','destroy'])
 ->middleware(['auth', 'verified']);
-
-
 
 
 Route::resource('chirps', ChirpController::class) //Chirp Controller
