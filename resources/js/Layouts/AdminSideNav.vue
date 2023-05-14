@@ -1,10 +1,12 @@
 
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { router } from '@inertiajs/vue3'
-import { useForm, Head } from '@inertiajs/vue3';
-
-
+import { ref } from 'vue';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
+import NavLink from '@/Components/NavLink.vue';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import { Link } from '@inertiajs/vue3';
 </script>
 <script>
  export default {
@@ -12,9 +14,9 @@ import { useForm, Head } from '@inertiajs/vue3';
      return {
        drawer: null,
        items: [
+         { icon: 'mdi-view-dashboard', title: 'Dashboard', route: 'Admin' },
          { icon: 'mdi-home-city', title: 'Home', route: 'dashboard', exact: true },
-         { icon: 'mdi-folder', title: 'My Files', route: 'Admin' },
-         { icon: 'mdi-account-multiple', title: 'Shared with me', route: 'Sem' }, // Just delete this, just for testing SEM
+         { icon: 'mdi-account-multiple', title: 'User', route: 'Sem' }, // Just delete this, just for testing SEM
          { icon: 'mdi-star', title: 'Starred', route: 'Sem' },
        ],
      };
@@ -39,17 +41,16 @@ import { useForm, Head } from '@inertiajs/vue3';
            </v-list-item>
          </v-list>
  
-         <v-divider></v-divider>
+         <v-divider :thickness="5" color="info"></v-divider>
  
          <v-list :lines="false" density="compact" nav>
            <v-list-item
              v-for="(item, i) in items"
              :key="i"
-             :to="item.route"
              :exact="item.exact"
              :href="route(item.route)"
              :active="route().current(item.route)"
-             active-color="orange-lighten-2"
+             active-color="blue-darken-1"
            >
              <template v-slot:prepend>
                <v-icon :icon="item.icon"></v-icon>
