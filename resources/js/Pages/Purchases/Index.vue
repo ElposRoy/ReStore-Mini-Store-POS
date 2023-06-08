@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AdminSideNav from '@/Layouts/AdminSideNav.vue';
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { router } from '@inertiajs/vue3'
@@ -192,8 +192,9 @@ export default {
    <!-- :items-length="purchases.total" (For Data-table-server)--> 
     <Head title="Purchases" />
  
-    <AuthenticatedLayout>
-      <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <AdminSideNav>
+      <!-- max-w-7x1 -->
+      <div class="max-w mx-auto p-4 sm:p-6 lg:p-8">
         <v-data-table
     :headers="headers"
     :items="purchases.data"
@@ -335,5 +336,5 @@ export default {
     </v-snackbar>
    
   
-    </AuthenticatedLayout>
+    </AdminSideNav>
 </template>
