@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AdminSideNav from '@/Layouts/AdminSideNav.vue';
 import ProductAddDialog from '@/Components/product/ProductAddDialog.vue';
 import ProductEditDialog from '@/Components/product/ProductEditDialog.vue';
 import ProductDeleteDialog from '@/Components/product/ProductDeleteDialog.vue';
@@ -248,9 +248,9 @@ export default {
 
 <template>
     <Head title="Products" />
- 
-    <AuthenticatedLayout>
-      <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+ <!-- max-w-7xl -->
+    <AdminSideNav >
+      <div class="max-w mx-auto p-4 sm:p-6 lg:p-8">
         <v-data-table
   
     :headers="headers"
@@ -305,7 +305,7 @@ export default {
         <v-toolbar
           flat
         >
-          <v-toolbar-title>STORE PRODUCTS</v-toolbar-title>
+          <v-toolbar-title>PRODUCTS</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -433,7 +433,7 @@ export default {
   
    
   
-    </AuthenticatedLayout>
+    </AdminSideNav >
 </template>
 
 
