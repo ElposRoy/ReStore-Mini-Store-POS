@@ -17,7 +17,7 @@ import { Link } from '@inertiajs/vue3';
          { icon: 'mdi-view-dashboard', title: 'Dashboard', route: 'Admin' },
          { icon: 'mdi-home-city', title: 'Home', route: 'dashboard', exact: true },
          { icon: 'mdi-warehouse', title: 'Products', route: 'products.index' }, //Product Page
-         { icon: 'mdi-cart-arrow-down', title: 'Purchases', route: 'products.index' }, //Purchases Page
+         { icon: 'mdi-cart-arrow-down', title: 'Purchases', route: 'purchases.index' }, //Purchases Page
          { icon: 'mdi-account-multiple', title: 'User', route: 'Sem' }, // Just delete this, just for testing SEM
          { icon: 'mdi-star', title: 'Starred', route: 'Sem' },
        ],
@@ -57,7 +57,10 @@ import { Link } from '@inertiajs/vue3';
              <template v-slot:prepend>
                <v-icon :icon="item.icon"></v-icon>
              </template>
-             <v-list-item-title v-text="item.title"></v-list-item-title>
+             <!-- Use Inertia Link tag to not load page when clicking link -->
+             <Link :href="route(item.route)"> 
+      <v-list-item-title v-text="item.title"></v-list-item-title>
+    </Link>
            </v-list-item>
          </v-list>
        </v-navigation-drawer>
@@ -68,6 +71,7 @@ import { Link } from '@inertiajs/vue3';
        </v-app-bar>
  
        <v-main>
+        <slot />
          <!-- Your main content here -->
        </v-main>
      </v-app>
