@@ -16,6 +16,8 @@ import { Link } from '@inertiajs/vue3';
        items: [
          { icon: 'mdi-view-dashboard', title: 'Dashboard', route: 'Admin' },
          { icon: 'mdi-home-city', title: 'Home', route: 'dashboard', exact: true },
+         { icon: 'mdi-warehouse', title: 'Products', route: 'products.index' }, //Product Page
+         { icon: 'mdi-cart-arrow-down', title: 'Purchases', route: 'products.index' }, //Purchases Page
          { icon: 'mdi-account-multiple', title: 'User', route: 'Sem' }, // Just delete this, just for testing SEM
          { icon: 'mdi-star', title: 'Starred', route: 'Sem' },
        ],
